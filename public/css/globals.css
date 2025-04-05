@@ -1,0 +1,31 @@
+:root {
+    --primary: #03045E;
+    --secondary: #0077B6;
+    --accent: #00B4D8;
+    --background: #90E0EF;
+    --surface: #CAF0F8;
+
+    --onPrimary: #FFFFFF;
+    --onSecondary: #FFFFFF;
+    --onAccent: #03045E;
+    --onBackground: #03045E;
+
+    --font-family: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background);
+    color: var(--onBackground);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
