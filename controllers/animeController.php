@@ -1,28 +1,35 @@
 <?php
 class AnimeFetcher {
+    private $pdo;
 
-    public function __construct() {}
+    public function __construct() {
+        $host = "localhost";
+        $dbname = "isla_otaku";
+        $username = "root";
+        $password = "";
 
-    public function fetchAnimesFromAPI($page = 1) {
-        $apiUrl = "https://api.jikan.moe/v4/top/anime?page=$page";
-        $response = file_get_contents($apiUrl);
-
-        if ($response === false) {
-            return [];
-        }
-
-        $data = json_decode($response, true);
-
-        if (isset($data['data'])) {
-            return $data['data']; 
-        } else {
-            error_log("Error: 'data' key not found in the API response");
-            return [];
+        try {
+            $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Database connection failed: " . $e->getMessage());
         }
     }
 
-    public function getAnimesForPage($page = 1) {
-        return $this->fetchAnimesFromAPI($page);
+    public function getAnimesForPageFromDb($offset, $limit) {
+        $stmt = $this->pdo->prepare(
+            "SELECT anime_id, name, image_url FROM animes LIMIT :offset, :limit"
+        );
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalAnimesCount() {
+        $stmt = $this->pdo->query("SELECT COUNT(*) FROM animes");
+        return $stmt->fetchColumn();
     }
 }
+
 ?>
