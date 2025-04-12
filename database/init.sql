@@ -1,69 +1,92 @@
 -- ================================================
--- 0. Creación de la Base de Datos (Si no existe)
+-- 0. Create the Database (if it doesn't exist)
 -- ================================================
 CREATE DATABASE IF NOT EXISTS isla_otaku
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_general_ci;
 
--- Utilizar la base de datos
+-- Use the database
 USE isla_otaku;
 
 -- ================================================
--- 1. Tabla de Usuarios
+-- 1. Users Table
 -- ================================================
-CREATE TABLE IF NOT EXISTS Usuarios (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    correo VARCHAR(100) UNIQUE NOT NULL,
-    contrasena VARCHAR(100) NOT NULL,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB 
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_general_ci;
 
 -- ================================================
--- 2. Tabla de Animes
+-- 2. Animes Table
 -- ================================================
 CREATE TABLE IF NOT EXISTS Animes (
-    id_anime INT PRIMARY KEY,
-    nombre VARCHAR(200) NOT NULL,
-    sinopsis TEXT,
-    imagen_url VARCHAR(300),
-    fecha_emision DATE,
-    estado VARCHAR(50),
-    num_episodios INT DEFAULT 0,
-    tipo VARCHAR(50)
+    anime_id INT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    synopsis TEXT,
+    image_url VARCHAR(300),
+    release_date DATE,
+    status VARCHAR(50),
+    num_episodes INT DEFAULT 0,
+    type VARCHAR(50)
 ) ENGINE=InnoDB 
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_general_ci;
 
 -- ================================================
--- 3. Tabla de Listas
+-- 3. Genres Table
 -- ================================================
-CREATE TABLE IF NOT EXISTS Listas (
-    id_lista INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario INT,
-    id_anime INT,
-    estado VARCHAR(50) NOT NULL,
-    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
-    FOREIGN KEY (id_anime) REFERENCES Animes(id_anime) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS Genres (
+    genre_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE
 ) ENGINE=InnoDB 
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_general_ci;
 
 -- ================================================
--- 4. Tabla de Reseñas
+-- 4. Anime-Genre Relationship Table (AnimeGenres)
 -- ================================================
-CREATE TABLE IF NOT EXISTS Reseñas (
-    id_resena INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario INT,
-    id_anime INT,
-    puntuacion INT CHECK (puntuacion BETWEEN 1 AND 5),
-    comentario TEXT,
-    fecha_publicacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
-    FOREIGN KEY (id_anime) REFERENCES Animes(id_anime) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS AnimeGenres (
+    anime_id INT,
+    genre_id INT,
+    PRIMARY KEY (anime_id, genre_id),
+    FOREIGN KEY (anime_id) REFERENCES Animes(anime_id) ON DELETE CASCADE,
+    FOREIGN KEY (genre_id) REFERENCES Genres(genre_id) ON DELETE CASCADE
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
+-- ================================================
+-- 5. Lists Table
+-- ================================================
+CREATE TABLE IF NOT EXISTS Lists (
+    list_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    anime_id INT,
+    status VARCHAR(50) NOT NULL,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (anime_id) REFERENCES Animes(anime_id) ON DELETE CASCADE
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
+-- ================================================
+-- 6. Reviews Table
+-- ================================================
+CREATE TABLE IF NOT EXISTS Reviews (
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    anime_id INT,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    comment TEXT,
+    publication_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (anime_id) REFERENCES Animes(anime_id) ON DELETE CASCADE
 ) ENGINE=InnoDB 
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_general_ci;
