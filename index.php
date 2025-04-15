@@ -40,8 +40,6 @@ $page = min($page, max(1, $totalPages));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./public/css/globals.css">
-    <link rel="stylesheet" href="./public/css/header.css">
     <link rel="stylesheet" href="./public/css/content.css">
     <title>IslaOtaku</title>
 </head>
@@ -113,8 +111,7 @@ $page = min($page, max(1, $totalPages));
         </div>
     </div>
 
-    <?php include(__DIR__ . '/includes/footer.php'); ?>
+    <?php include(__DIR__ . '/includes/footer.php');?>
     
-    <script src="./public/js/cards.js"></script>
 </body>
 </html>
