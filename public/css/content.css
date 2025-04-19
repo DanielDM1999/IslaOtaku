@@ -9,8 +9,8 @@
 
 .anime-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 12px;
   justify-items: center;
   padding: 20px 0;
 }
@@ -22,12 +22,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 250px;
-  transition: transform 0.3s ease;
-  height: 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .anime-item:hover {
   transform: translateY(-10px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .anime-card {
@@ -106,38 +106,50 @@
   height: 32px;
 }
 
+@media (max-width: 1300px) {
+  .anime-list {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for screens <= 1300px */
+  }
+}
+
 @media (max-width: 768px) {
   .anime-list {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for screens <= 768px */
   }
 
   .anime-item {
-      height: 300px;
+    height: 300px;
   }
 
   .pagination a {
-      min-width: 28px;
-      height: 28px;
-      font-size: 0.8rem;
+    min-width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .anime-list {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for screens <= 480px */
   }
 
   .anime-item {
-      height: 250px;
+    height: 250px;
   }
 
   .pagination {
-      gap: 4px;
+    gap: 4px;
   }
 
   .pagination a {
-      min-width: 24px;
-      height: 24px;
-      font-size: 0.7rem;
+    min-width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .anime-list {
+    grid-template-columns: repeat(1, 1fr); /* 1 column for screens <= 320px */
   }
 }
