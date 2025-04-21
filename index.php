@@ -1,188 +1,192 @@
 <?php
-// Check if the language cookie is set, otherwise default to Spanish
-$lang = isset($_COOKIE['lang']) ? $_COOKIE['lang'] : 'es';
-include(__DIR__ . "/dictionaries/$lang.php");
-include(__DIR__ . '/controllers/animeController.php');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// If the language has been selected and posted, update the cookie
+$lang = isset($_COOKIE['lang']) ? $_COOKIE['lang'] : 'es';
+
 if (isset($_POST['lang'])) {
     $lang = $_POST['lang'];
     setcookie('lang', $lang, time() + (86400 * 30), "/");
-    header("Location: " . $_SERVER['PHP_SELF']);
+
+    // Preserve all query parameters
+    $queryParams = $_GET;
+    $queryParams['lang'] = $lang; // Add or update the language parameter in the query string
+    $redirectUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($queryParams);
+
+    header("Location: $redirectUrl");
     exit;
 }
 
-// Check if this is an AJAX request
-if (isset($_GET['ajax']) && $_GET['ajax'] === 'true') {
-    // Fixed number of items per page
+
+include(__DIR__ . "/dictionaries/$lang.php");
+
+require_once(__DIR__ . '/controllers/UserController.php');
+require_once(__DIR__ . '/controllers/AnimeController.php');
+
+$userController = new UserController();
+$animeFetcher = new AnimeFetcher();
+
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+    $userController->logout();
+    header("Location: index.php");
+    exit();
+}
+
+$content = isset($_GET['content']) ? $_GET['content'] : 'home';
+
+$allowedContent = ['home', 'login', 'register', 'profile', 'reviews'];
+
+if (!in_array($content, $allowedContent)) {
+    $content = 'home';
+}
+
+if (in_array($content, ['profile', 'my-reviews']) && !$userController->isLoggedIn()) {
+    $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+    header("Location: index.php?content=login");
+    exit();
+}
+
+$loginError = '';
+if ($content === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['password'])) {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    if ($userController->login($email, $password)) {
+        $redirect = isset($_SESSION['redirect_url']) ? $_SESSION['redirect_url'] : 'index.php';
+        unset($_SESSION['redirect_url']);
+        header("Location: $redirect");
+        exit();
+    } else {
+        $loginError = 'Invalid email or password';
+    }
+}
+
+$registerError = '';
+if ($content === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'], $_POST['email'])) {
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $confirmPassword = $_POST['confirm_password'] ?? '';
+
+    $result = $userController->register($name, $email, $password, $confirmPassword);
+
+    if ($result === true) {
+        header("Location: index.php");
+        exit();
+    } else {
+        $registerError = $result;
+    }
+}
+
+$isLoggedIn = $userController->isLoggedIn();
+$currentUser = $isLoggedIn ? $userController->getCurrentUser() : null;
+$userName = $isLoggedIn ? $currentUser['name'] : '';
+
+if ($content === 'home') {
     $itemsPerPage = 20;
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     $page = max(1, $page);
     $offset = ($page - 1) * $itemsPerPage;
 
-    // Fetch animes
-    $animeFetcher = new AnimeFetcher();
     $animes = $animeFetcher->getAnimesForPageFromDb($offset, $itemsPerPage);
     $totalAnimes = $animeFetcher->getTotalAnimesCount();
     $totalPages = ceil($totalAnimes / $itemsPerPage);
 
-    // Ensure current page doesn't exceed total pages
     $page = min($page, max(1, $totalPages));
-
-    // Generate pagination HTML
-    ob_start();
-
-    // Pagination HTML generation
-    if ($totalPages > 1) {
-        if ($page > 1) {
-            echo '<a href="?page=1" class="pagination-control">&laquo;</a>';
-            echo '<a href="?page=' . ($page - 1) . '" class="pagination-control">&lsaquo;</a>';
-        }
-
-        // Determine range of page numbers to show
-        $range = 5;
-        $start = max(1, $page - floor($range / 2));
-        $end = min($totalPages, $start + $range - 1);
-
-        if ($end == $totalPages) {
-            $start = max(1, $end - $range + 1);
-        }
-
-        if ($start > 1) {
-            echo '<a href="?page=1">1</a>';
-            if ($start > 2) {
-                echo '<span class="pagination-ellipsis">&hellip;</span>';
-            }
-        }
-
-        for ($i = $start; $i <= $end; $i++) {
-            $activeClass = ($i == $page) ? 'active' : '';
-            echo '<a href="?page=' . $i . '" class="' . $activeClass . '">' . $i . '</a>';
-        }
-
-        if ($end < $totalPages) {
-            if ($end < $totalPages - 1) {
-                echo '<span class="pagination-ellipsis">&hellip;</span>';
-            }
-            echo '<a href="?page=' . $totalPages . '">' . $totalPages . '</a>';
-        }
-
-        if ($page < $totalPages) {
-            echo '<a href="?page=' . ($page + 1) . '" class="pagination-control">&rsaquo;</a>';
-            echo '<a href="?page=' . $totalPages . '" class="pagination-control">&raquo;</a>';
-        }
-    }
-
-    $paginationHtml = ob_get_clean();
-
-    // Prepare response
-    $response = [
-        'animes' => $animes,
-        'pagination' => $paginationHtml,
-        'currentPage' => $page,
-        'totalPages' => $totalPages
-    ];
-
-    // Send JSON response
-    header('Content-Type: application/json');
-    echo json_encode($response);
-    exit;
 }
-
-// Regular page load (not AJAX)
-$itemsPerPage = 20;
-$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$page = max(1, $page);
-$offset = ($page - 1) * $itemsPerPage;
-
-$animeFetcher = new AnimeFetcher();
-$animes = $animeFetcher->getAnimesForPageFromDb($offset, $itemsPerPage);
-$totalAnimes = $animeFetcher->getTotalAnimesCount();
-$totalPages = ceil($totalAnimes / $itemsPerPage);
-
-// Ensure current page doesn't exceed total pages
-$page = min($page, max(1, $totalPages));
 ?>
 
 <!DOCTYPE html>
-<html lang="<?php echo isset($_COOKIE['lang']) ? $_COOKIE['lang'] : 'es'; ?>">
+<html lang="<?php echo $lang; ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./public/css/content.css">
+    <link rel="stylesheet" href="./public/css/globals.css">
+    <link rel="stylesheet" href="./public/css/header.css">
+    <link rel="stylesheet" href="./public/css/footer.css">
+    <?php if ($content === 'home'): ?>
+        <link rel="stylesheet" href="./public/css/content.css">
+    <?php endif; ?>
     <title>IslaOtaku</title>
 </head>
 
 <body>
-    <?php include(__DIR__ . '/includes/header.php'); ?>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-title">
+                <a href="index.php" class="logo-link">
+                    <img src="./public/images/icon.png" alt="Logo" class="logo-img" />
+                    <h1 class="title">IslaOtaku</h1>
+                </a>
+
+            </div>
+
+            <nav class="nav">
+                <?php if ($isLoggedIn): ?>
+                    <div class="user-menu">
+                        <span class="username"><?php echo htmlspecialchars($userName); ?></span>
+                        <div class="dropdown">
+                            <button class="dropdown-btn"><?php echo $translations['account']; ?> ▼</button>
+                            <div class="dropdown-content">
+                                <a href="index.php?content=profile"><?php echo $translations['profile']; ?></a>
+                                <a href="index.php?action=logout"><?php echo $translations['logout']; ?></a>
+                            </div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <a href="index.php?content=login" class="nav-link"><?php echo $translations['login']; ?></a>
+                    <a href="index.php?content=register" class="nav-link"><?php echo $translations['register']; ?></a>
+                <?php endif; ?>
+
+                <form action="" method="post" class="lang-form">
+                    <select class="language-select" name="lang" onchange="this.form.submit()">
+                        <option value="en" <?php echo ($lang == 'en') ? 'selected' : ''; ?>>English</option>
+                        <option value="es" <?php echo ($lang == 'es') ? 'selected' : ''; ?>>Español</option>
+                    </select>
+                </form>
+            </nav>
+        </div>
+    </header>
+
 
     <div class="content">
-        <h1>Top Anime</h1>
-
-        <div class="anime-list" id="anime-list">
-            <?php foreach ($animes as $anime): ?>
-                <div class="anime-item">
-                    <div class="anime-card">
-                        <?php
-                        $imageUrl = $anime['image_url'];
-                        echo '<img src="' . htmlspecialchars($imageUrl) . '" alt="' . htmlspecialchars($anime['name']) . '" class="anime-img">';
-                        ?>
-                        <h2><?php echo htmlspecialchars($anime['name']); ?></h2>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-
-        <!-- Pagination Controls -->
-        <div class="pagination" id="pagination">
-            <?php if ($totalPages > 1): ?>
-                <?php if ($page > 1): ?>
-                    <a href="?page=1" class="pagination-control">&laquo;</a>
-                    <a href="?page=<?php echo $page - 1; ?>" class="pagination-control">&lsaquo;</a>
-                <?php endif; ?>
-
-                <?php
-                // Determine range of page numbers to show
-                $range = 5;
-                $start = max(1, $page - floor($range / 2));
-                $end = min($totalPages, $start + $range - 1);
-
-                if ($end == $totalPages) {
-                    $start = max(1, $end - $range + 1);
-                }
-
-                if ($start > 1): ?>
-                    <a href="?page=1">1</a>
-                    <?php if ($start > 2): ?>
-                        <span class="pagination-ellipsis">&hellip;</span>
-                    <?php endif; ?>
-                <?php endif; ?>
-
-                <?php for ($i = $start; $i <= $end; $i++): ?>
-                    <a href="?page=<?php echo $i; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>">
-                        <?php echo $i; ?>
-                    </a>
-                <?php endfor; ?>
-
-                <?php if ($end < $totalPages): ?>
-                    <?php if ($end < $totalPages - 1): ?>
-                        <span class="pagination-ellipsis">&hellip;</span>
-                    <?php endif; ?>
-                    <a href="?page=<?php echo $totalPages; ?>"><?php echo $totalPages; ?></a>
-                <?php endif; ?>
-
-                <?php if ($page < $totalPages): ?>
-                    <a href="?page=<?php echo $page + 1; ?>" class="pagination-control">&rsaquo;</a>
-                    <a href="?page=<?php echo $totalPages; ?>" class="pagination-control">&raquo;</a>
-                <?php endif; ?>
-            <?php endif; ?>
-        </div>
+        <?php
+        switch ($content) {
+            case 'login':
+                include(__DIR__ . '/views/login.php');
+                break;
+            case 'register':
+                include(__DIR__ . '/views/register.php');
+                break;
+            case 'profile':
+                include(__DIR__ . '/views/profile.php');
+                break;
+            case 'my-reviews':
+                include(__DIR__ . '/views/reviews.php');
+                break;
+            default:
+                include(__DIR__ . '/views/home.php');
+                break;
+        }
+        ?>
     </div>
 
-    <?php include(__DIR__ . '/includes/footer.php'); ?>
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; <?php echo date("Y"); ?> IslaOtaku. All Rights Reserved.</p>
+            <nav class="footer-nav">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </nav>
+        </div>
+    </footer>
 
-    <script src="./public/js/cards.js">
+    <?php if ($content === 'home'): ?>
+        <script src="./public/js/cards.js"></script>
+    <?php endif; ?>
 </body>
 
 </html>
