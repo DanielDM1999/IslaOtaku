@@ -1,5 +1,8 @@
 <?php
 $translations = [
     'login' => 'Login',
-    'register' => 'Register'
+    'register' => 'Register',
+    'logout' => 'Logout',
+    'profile' => 'Profile',
+    'account' => 'My Account',
 ];

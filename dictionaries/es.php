@@ -2,4 +2,7 @@
 $translations = [
     'login' => 'Iniciar sesión',
     'register' => 'Registrar',
+    'logout' => 'Cerrar sesión',
+    'profile' => 'Perfil',
+    'account' => 'Mi cuenta',
 ];
