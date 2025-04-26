@@ -18,14 +18,13 @@ if (isset($_POST['lang'])) {
     exit;
 }
 
-
 include(__DIR__ . "/dictionaries/$lang.php");
 
 require_once(__DIR__ . '/controllers/UserController.php');
 require_once(__DIR__ . '/controllers/AnimeController.php');
 
 $userController = new UserController();
-$animeFetcher = new AnimeFetcher();
+$animeController = new AnimeController();
 
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     $userController->logout();
@@ -89,8 +88,9 @@ if ($content === 'home') {
     $page = max(1, $page);
     $offset = ($page - 1) * $itemsPerPage;
 
-    $animes = $animeFetcher->getAnimesForPageFromDb($offset, $itemsPerPage);
-    $totalAnimes = $animeFetcher->getTotalAnimesCount();
+    // Use AnimeController's new methods
+    $animes = $animeController->getAnimesForPage($offset, $itemsPerPage);
+    $totalAnimes = $animeController->getTotalAnimesCount();
     $totalPages = ceil($totalAnimes / $itemsPerPage);
 
     $page = min($page, max(1, $totalPages));
@@ -120,7 +120,6 @@ if ($content === 'home') {
                     <img src="./public/images/icon.png" alt="Logo" class="logo-img" />
                     <h1 class="title">IslaOtaku</h1>
                 </a>
-
             </div>
 
             <nav class="nav">
@@ -150,7 +149,6 @@ if ($content === 'home') {
         </div>
     </header>
 
-
     <div class="content">
         <?php
         switch ($content) {
@@ -163,7 +161,7 @@ if ($content === 'home') {
             case 'profile':
                 include(__DIR__ . '/views/profile.php');
                 break;
-            case 'my-reviews':
+            case 'reviews':
                 include(__DIR__ . '/views/reviews.php');
                 break;
             default:

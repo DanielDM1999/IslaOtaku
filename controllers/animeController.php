@@ -1,35 +1,21 @@
 <?php
-class AnimeFetcher {
-    private $pdo;
+require_once(__DIR__ . '/../config/Database.php');
+require_once(__DIR__ . '/../models/AnimeModel.php');
+
+class AnimeController {
+    private $animeModel;
 
     public function __construct() {
-        $host = "localhost";
-        $dbname = "isla_otaku";
-        $username = "root";
-        $password = "";
-
-        try {
-            $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            die("Database connection failed: " . $e->getMessage());
-        }
+        $db = new Database();
+        $this->animeModel = new AnimeModel($db->getConnection());
     }
 
-    public function getAnimesForPageFromDb($offset, $limit) {
-        $stmt = $this->pdo->prepare(
-            "SELECT anime_id, name, image_url FROM animes LIMIT :offset, :limit"
-        );
-        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getAnimesForPage($offset, $limit) {
+        return $this->animeModel->getAnimesForPage($offset, $limit);
     }
 
     public function getTotalAnimesCount() {
-        $stmt = $this->pdo->query("SELECT COUNT(*) FROM animes");
-        return $stmt->fetchColumn();
+        return $this->animeModel->getTotalAnimesCount();
     }
 }
-
 ?>
