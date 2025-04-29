@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (screenWidth <= 1300) {
       animeList.style.setProperty('grid-template-columns', 'repeat(4, 1fr)', 'important');
     } else {
-      animeList.style.setProperty('grid-template-columns', 'repeat(5, 1fr)', 'important');
+      animeList.style.setProperty('grid-template-columns', 'repeat(6, 1fr)', 'important');
     }
   }
 

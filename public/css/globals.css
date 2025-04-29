@@ -20,10 +20,18 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%; /* Ensure full height for the html element */
+}
+
 body {
+    min-height: 100vh;
+    display: flex; /* Enable flexbox layout */
+    flex-direction: column; /* Stack elements vertically */
     font-family: var(--font-family);
     background-color: var(--background);
     color: var(--onBackground);
+    margin: 0; /* Ensure no margin issues */
 }
 
 a {

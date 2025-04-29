@@ -1,5 +1,5 @@
-/* Updated content.css for responsiveness */
 .content {
+  flex: 1;
   margin: 0 20px;
   padding: 20px;
   background-color: var(--surface);
@@ -9,7 +9,7 @@
 
 .anime-list {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); 
+  grid-template-columns: repeat(6, 1fr) !important; 
   gap: 12px;
   justify-items: center;
   padding: 20px 0;
@@ -121,6 +121,11 @@
     height: 300px;
   }
 
+  .anime-item:hover {
+    transform: none; /* Disable hover effect on small screens */
+    box-shadow: none; /* Disable shadow for mobile users */
+  }
+
   .pagination a {
     min-width: 28px;
     height: 28px;
@@ -151,5 +156,12 @@
 @media (max-width: 320px) {
   .anime-list {
     grid-template-columns: repeat(1, 1fr); /* 1 column for screens <= 320px */
+  }
+  .anime-item {
+    height: auto;  /* Allow for flexibility in height on very small screens */
+  }
+  .pagination {
+    width: 100%;
+    flex-wrap: wrap;  /* Prevent overflow */
   }
 }
