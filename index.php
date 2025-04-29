@@ -9,9 +9,8 @@ if (isset($_POST['lang'])) {
     $lang = $_POST['lang'];
     setcookie('lang', $lang, time() + (86400 * 30), "/");
 
-    // Preserve all query parameters
     $queryParams = $_GET;
-    $queryParams['lang'] = $lang; // Add or update the language parameter in the query string
+    $queryParams['lang'] = $lang; 
     $redirectUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($queryParams);
 
     header("Location: $redirectUrl");
@@ -83,12 +82,11 @@ $currentUser = $isLoggedIn ? $userController->getCurrentUser() : null;
 $userName = $isLoggedIn ? $currentUser['name'] : '';
 
 if ($content === 'home') {
-    $itemsPerPage = 20;
+    $itemsPerPage = 24;
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     $page = max(1, $page);
     $offset = ($page - 1) * $itemsPerPage;
 
-    // Use AnimeController's new methods
     $animes = $animeController->getAnimesForPage($offset, $itemsPerPage);
     $totalAnimes = $animeController->getTotalAnimesCount();
     $totalPages = ceil($totalAnimes / $itemsPerPage);
@@ -103,12 +101,13 @@ if ($content === 'home') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="./public/css/globals.css">
     <link rel="stylesheet" href="./public/css/header.css">
+    <link rel="stylesheet" href="./public/css/content.css">
     <link rel="stylesheet" href="./public/css/footer.css">
-    <?php if ($content === 'home'): ?>
-        <link rel="stylesheet" href="./public/css/content.css">
-    <?php endif; ?>
+    <link rel="stylesheet" href="./public/css/login.css">
+    
     <title>IslaOtaku</title>
 </head>
 
@@ -117,11 +116,11 @@ if ($content === 'home') {
         <div class="header-container">
             <div class="logo-title">
                 <a href="index.php" class="logo-link">
-                    <img src="./public/images/icon.png" alt="Logo" class="logo-img" />
+                    <img src="./public/images/icon.png" alt="Logo" class="logo-img">
                     <h1 class="title">IslaOtaku</h1>
                 </a>
             </div>
-
+            
             <nav class="nav">
                 <?php if ($isLoggedIn): ?>
                     <div class="user-menu">
