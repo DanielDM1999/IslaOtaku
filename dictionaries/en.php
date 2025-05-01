@@ -2,10 +2,23 @@
 $translations = [
     'login' => 'Login',
     'register' => 'Register',
-    'logout' => 'Logout',
-    'profile' => 'Profile',
-    'account' => 'My Account',
     'username' => 'Username',
+    'email' => 'Email',
     'password' => 'Password',
-    'forgot_password' => 'Forgot your password?',
+    'confirm_password' => 'Confirm Password',
+    'account' => 'Account',
+    'profile' => 'Profile',
+    'logout' => 'Logout',
+    'invalid_credentials' => 'Invalid email or password',
+    'no_account' => 'Don\'t have an account?',
+    'have_account' => 'Already have an account?',
+    'account_info' => 'Account Information',
+    'member_since' => 'Member Since',
+    'anime_stats' => 'Anime Statistics',
+    'watching' => 'Watching',
+    'completed' => 'Completed',
+    'plan_to_watch' => 'Plan to Watch',
+    'reviews' => 'Reviews',
+    'not_logged_in' => 'You are not logged in'
 ];
+?>

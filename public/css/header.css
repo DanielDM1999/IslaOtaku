@@ -1,140 +1,186 @@
-/* Default styles */
-.header {
-  background-color: var(--primary);
-  color: var(--onPrimary);
-  padding: 16px;
-}
-
+/* Header container and general layout */
 .header-container {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; /* Allow wrapping */
+  padding: 15px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .logo-title {
   display: flex;
-  align-items: center;  /* Center vertically */
-  gap: 16px;  /* Add space between logo and title */
+  align-items: center;
 }
 
 .logo-link {
   display: flex;
   align-items: center;
-  text-decoration: none;  /* Remove underline from the link */
+  text-decoration: none;
+  color: inherit;
 }
 
 .logo-img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
 }
 
 .title {
   font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--onPrimary);
-  margin-left: 5px;
+  font-weight: bold;
+  margin: 0;
 }
 
+/* Navigation styling */
 .nav {
   display: flex;
   align-items: center;
-  gap: 16px;
 }
 
 .nav-link {
-  padding: 8px 16px;
-  border-radius: 6px;
+  color: #333;
+  text-decoration: none;
+  margin-left: 20px;
   font-weight: 500;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  color: var(--onPrimary);
+  transition: color 0.2s ease;
+  padding: 8px 15px;
+  border-radius: 6px;
 }
 
 .nav-link:hover {
-  background-color: var(--accent);
-  color: var(--onAccent);
+  color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.lang-form {
+  margin-left: 20px;
 }
 
 .language-select {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: none;
-  font-family: inherit;
-  font-size: 1rem;
-  background-color: var(--surface);
-  color: var(--onBackground);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: white;
   cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 12px;
-  padding-right: 32px;
-  margin-left: auto; 
 }
 
-.language-select:hover {
-  background-color: var(--accent);
+/* User menu styling - UPDATED */
+.user-menu {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
 }
 
-/* Responsive Styles for screen sizes */
+/* Profile button styling */
+.profile-btn {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  margin-right: 10px;
+}
 
+.profile-btn:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.username {
+  font-weight: 500;
+  color: #333;
+  margin-left: 8px;
+}
+
+/* User avatar styling */
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Logout button styling */
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  display: inline-block;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
   .header-container {
-    flex-direction: column;
-    align-items: flex-start; /* Align everything to the left */
+    padding: 10px 15px;
   }
 
-  .nav {
-    width: 100%;
-    justify-content: flex-start;
-    margin-top: 12px;
-    gap: 12px;
+  .logo-img {
+    height: 32px;
   }
 
-  .language-select {
-    margin-top: 12px; /* Add spacing from the element above */
-    width: auto; /* Keep its default width */
-  }
-
-  form {
-    align-self: flex-start; /* Align the form (and its content) to the left */
-  }
-}
-
-@media (max-width: 480px) {
-  .header-container {
-    flex-direction: column;
-    align-items: center; /* Center everything for the smallest screens */
-  }
-
-  .logo-title {
-    justify-content: center; /* Center the logo and title */
-  }
-
-  .nav {
-    flex-direction: column;
-    align-items: center; /* Center the navigation links */
-    justify-content: center;
+  .title {
+    font-size: 1.2rem;
   }
 
   .nav-link {
-    width: 100%;
-    text-align: center;
+    margin-left: 10px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
   }
 
-  form {
-    align-self: center; /* Center the form itself */
-    margin-top: 12px;
+  .lang-form {
+    margin-left: 10px;
   }
 
   .language-select {
-    width: auto; /* Keep the select at its default width */
-    margin-top: 12px;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  .profile-btn {
+    padding: 4px 8px;
+  }
+
+  .logout-btn {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .title {
+    display: none; /* Hide the title on very small screens */
+  }
+
+  .username {
+    display: none; /* Hide username on very small screens */
+  }
+
+  .user-menu {
+    margin-right: 5px;
+  }
+
+  .profile-btn {
+    margin-right: 5px;
   }
 }

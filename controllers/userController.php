@@ -10,6 +10,12 @@ class UserController {
         $this->userModel = new UserModel($db->getConnection());
     }
 
+    private function startSession() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
     public function login($email, $password) {
         if (empty($email) || empty($password)) {
             return false;
@@ -18,9 +24,7 @@ class UserController {
         $user = $this->userModel->getUserByEmail($email);
 
         if ($user && password_verify($password, $user['password'])) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
+            $this->startSession();
 
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['name'] = $user['name'];
@@ -35,19 +39,19 @@ class UserController {
 
     public function register($name, $email, $password, $confirmPassword) {
         if (empty($name) || empty($email) || empty($password) || empty($confirmPassword)) {
-            return "All fields are required";
+            return 'All fields are required';
         }
 
         if ($password !== $confirmPassword) {
-            return "Passwords do not match";
+            return 'Passwords do not match';
         }
 
         if ($this->userModel->getUserByEmail($email)) {
-            return "Email already in use";
+            return 'Email already in use';
         }
 
         if ($this->userModel->getUserByName($name)) {
-            return "Username already taken";
+            return 'Username already taken';
         }
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -55,9 +59,7 @@ class UserController {
         $userId = $this->userModel->createUser($name, $email, $hashedPassword);
 
         if ($userId) {
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
+            $this->startSession();
 
             $_SESSION['user_id'] = $userId;
             $_SESSION['name'] = $name;
@@ -67,13 +69,11 @@ class UserController {
             return true;
         }
 
-        return "Registration failed";
+        return 'Registration failed';
     }
 
     public function logout() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        $this->startSession();
 
         $_SESSION = array();
         session_destroy();
@@ -88,10 +88,13 @@ class UserController {
     }
 
     public function isLoggedIn() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        $this->startSession();
+        
+        // Check if session is expired
+        if ($this->isSessionExpired()) {
+            return false;
         }
-
+        
         return isset($_SESSION['user_id']);
     }
 
@@ -100,6 +103,9 @@ class UserController {
             return null;
         }
 
+        // Update last activity time
+        $_SESSION['last_activity'] = time();
+        
         return $this->userModel->getUserById($_SESSION['user_id']);
     }
 
@@ -117,6 +123,16 @@ class UserController {
         }
 
         return $this->userModel->getUserReviews($_SESSION['user_id']);
+    }
+
+    public function isSessionExpired() {
+        $this->startSession();
+        
+        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > 1800) {  
+            $this->logout();
+            return true;
+        }
+        return false;
     }
 }
 ?>

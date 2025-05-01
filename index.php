@@ -107,46 +107,47 @@ if ($content === 'home') {
     <link rel="stylesheet" href="./public/css/content.css">
     <link rel="stylesheet" href="./public/css/footer.css">
     <link rel="stylesheet" href="./public/css/login.css">
+    <link rel="stylesheet" href="./public/css/register.css">
+    <link rel="stylesheet" href="./public/css/profile.css">
     
     <title>IslaOtaku</title>
 </head>
 
 <body>
-    <header class="header">
-        <div class="header-container">
-            <div class="logo-title">
-                <a href="index.php" class="logo-link">
-                    <img src="./public/images/icon.png" alt="Logo" class="logo-img">
-                    <h1 class="title">IslaOtaku</h1>
-                </a>
-            </div>
-            
-            <nav class="nav">
-                <?php if ($isLoggedIn): ?>
-                    <div class="user-menu">
-                        <span class="username"><?php echo htmlspecialchars($userName); ?></span>
-                        <div class="dropdown">
-                            <button class="dropdown-btn"><?php echo $translations['account']; ?> ▼</button>
-                            <div class="dropdown-content">
-                                <a href="index.php?content=profile"><?php echo $translations['profile']; ?></a>
-                                <a href="index.php?action=logout"><?php echo $translations['logout']; ?></a>
-                            </div>
-                        </div>
-                    </div>
-                <?php else: ?>
-                    <a href="index.php?content=login" class="nav-link"><?php echo $translations['login']; ?></a>
-                    <a href="index.php?content=register" class="nav-link"><?php echo $translations['register']; ?></a>
-                <?php endif; ?>
-
-                <form action="" method="post" class="lang-form">
-                    <select class="language-select" name="lang" onchange="this.form.submit()">
-                        <option value="en" <?php echo ($lang == 'en') ? 'selected' : ''; ?>>English</option>
-                        <option value="es" <?php echo ($lang == 'es') ? 'selected' : ''; ?>>Español</option>
-                    </select>
-                </form>
-            </nav>
+<header class="header">
+    <div class="header-container">
+        <div class="logo-title">
+            <a href="index.php" class="logo-link">
+                <img src="./public/images/icon.png" alt="Logo" class="logo-img">
+                <h1 class="title">IslaOtaku</h1>
+            </a>
         </div>
-    </header>
+        
+        <nav class="nav">
+            <?php if ($isLoggedIn): ?>
+                <div class="user-menu">
+                    <a href="index.php?content=profile" class="nav-link user-btn">
+                        <span class="username"><?php echo htmlspecialchars($userName); ?></span>
+                    </a>
+                    <a href="index.php?action=logout" class="nav-link logout-btn">
+                        <?php echo $translations['logout']; ?>
+                    </a>
+                </div>
+            <?php else: ?>
+                <a href="index.php?content=login" class="nav-link"><?php echo $translations['login']; ?></a>
+                <a href="index.php?content=register" class="nav-link"><?php echo $translations['register']; ?></a>
+            <?php endif; ?>
+
+            <form action="" method="post" class="lang-form">
+                <select class="language-select" name="lang" onchange="this.form.submit()">
+                    <option value="en" <?php echo ($lang == 'en') ? 'selected' : ''; ?>>English</option>
+                    <option value="es" <?php echo ($lang == 'es') ? 'selected' : ''; ?>>Español</option>
+                </select>
+            </form>
+        </nav>
+    </div>
+</header>
+
 
     <div class="content">
         <?php
@@ -184,6 +185,7 @@ if ($content === 'home') {
     <?php if ($content === 'home'): ?>
         <script src="./public/js/cards.js"></script>
     <?php endif; ?>
+    <script src="./public/js/auth.js"></script>
 </body>
 
 </html>

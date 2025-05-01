@@ -1,5 +1,5 @@
 /* General container styling */
-.login-form-container {
+.register-form-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,7 +15,7 @@
   }
   
   /* Header styling */
-  .login-form-container h1 {
+  .register-form-container h1 {
     font-size: 1.8rem;
     color: #333;
     margin-bottom: 20px;
@@ -23,23 +23,21 @@
   }
   
   /* Form styling */
-  .login-form-container form {
+  .register-form-container form {
     width: 100%;
     display: flex;
     flex-direction: column;
   }
   
   /* Label styling */
-  .login-form-container label {
+  .register-form-container label {
     font-size: 1rem;
     color: #555;
     margin-bottom: 8px;
   }
   
   /* Input fields styling */
-  .login-form-container input[type="text"],
-  .login-form-container input[type="email"],
-  .login-form-container input[type="password"] {
+  .register-form-container .input-field {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -50,16 +48,14 @@
   }
   
   /* Input hover and focus effects */
-  .login-form-container input[type="text"]:focus,
-  .login-form-container input[type="email"]:focus,
-  .login-form-container input[type="password"]:focus {
+  .register-form-container .input-field:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 3px rgba(0, 123, 255, 0.25);
   }
   
   /* Button styling */
-  .login-form-container button[type="submit"] {
+  .register-form-container .submit-button {
     background-color: #007bff;
     color: #fff;
     font-size: 1rem;
@@ -72,7 +68,7 @@
   }
   
   /* Button hover effect */
-  .login-form-container button[type="submit"]:hover {
+  .register-form-container .submit-button:hover {
     background-color: #0056b3;
   }
   
@@ -107,22 +103,20 @@
   
   /* Responsive design */
   @media (max-width: 768px) {
-    .login-form-container {
+    .register-form-container {
       padding: 15px;
       width: 90%;
     }
   
-    .login-form-container h1 {
+    .register-form-container h1 {
       font-size: 1.5rem;
     }
   
-    .login-form-container input[type="text"],
-    .login-form-container input[type="email"],
-    .login-form-container input[type="password"] {
+    .register-form-container .input-field {
       font-size: 0.9rem;
     }
   
-    .login-form-container button[type="submit"] {
+    .register-form-container .submit-button {
       font-size: 0.9rem;
     }
   }
