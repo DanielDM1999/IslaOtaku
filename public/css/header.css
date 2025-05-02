@@ -1,13 +1,16 @@
 /* Header container and general layout */
 .header-container {
   display: flex;
+  flex-wrap: wrap; /* Allow wrapping for responsive design */
+  background-color: var(--primary);
+  color: var(--content);
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Logo and title */
 .logo-title {
   display: flex;
   align-items: center;
@@ -39,59 +42,65 @@
 }
 
 .nav-link {
-  color: #333;
+  color: var(--content);
   text-decoration: none;
   margin-left: 20px;
   font-weight: 500;
-  transition: color 0.2s ease;
-  padding: 8px 15px;
+  transition: background-color 0.2s ease;
+  padding: 6px 12px;
   border-radius: 6px;
+  background-color: var(--secondary); /* Styled like logout button */
 }
 
 .nav-link:hover {
-  color: #007bff;
-  background-color: rgba(0, 123, 255, 0.1);
+  background-color: var(--accent);
 }
 
+/* Language select styling */
 .lang-form {
   margin-left: 20px;
 }
 
 .language-select {
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  background-color: white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 6px 12px;
+  font-family: Poppins, sans-serif;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+  background-color: var(--secondary); /* Ensure this matches your intended background color */
+  color: var(--content);
   cursor: pointer;
+  transition: background-color 0.2s ease;
+
 }
 
-/* User menu styling - UPDATED */
+.language-select:hover {
+  background-color: var(--accent);
+}
+
+/* User menu */
 .user-menu {
   display: flex;
   align-items: center;
   margin-right: 10px;
 }
 
-/* Profile button styling */
 .profile-btn {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #333;
+  color: var(--content);
   padding: 6px 12px;
   border-radius: 6px;
+  background-color: var(--secondary); /* Styled like logout button */
   transition: background-color 0.2s ease;
-  margin-right: 10px;
 }
 
 .profile-btn:hover {
-  background-color: rgba(0, 123, 255, 0.1);
-}
-
-.username {
-  font-weight: 500;
-  color: #333;
-  margin-left: 8px;
+  background-color: var(--accent);
 }
 
 /* User avatar styling */
@@ -99,11 +108,11 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #007bff;
+  background-color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--onAccent);
   font-weight: bold;
   font-size: 14px;
   flex-shrink: 0;
@@ -111,76 +120,68 @@
 
 /* Logout button styling */
 .logout-btn {
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--secondary);
+  color: var(--content);
   padding: 6px 12px;
-  font-size: 0.9rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.2s ease;
-  display: inline-block;
 }
 
 .logout-btn:hover {
-  background-color: #c82333;
+  background-color: var(--accent);
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
   .header-container {
-    padding: 10px 15px;
+    flex-wrap: wrap; /* Stack content vertically */
+    justify-content: center; /* Center align items */
+    align-items: flex-start; /* Align items at the top */
   }
 
-  .logo-img {
-    height: 32px;
+  .logo-title {
+    margin-bottom: 10px;
   }
 
-  .title {
-    font-size: 1.2rem;
+  .nav {
+    justify-content: center;
+    margin-bottom: 10px;
   }
 
-  .nav-link {
-    margin-left: 10px;
-    padding: 6px 10px;
-    font-size: 0.9rem;
+  .nav-link,
+  .profile-btn,
+  .logout-btn,
+  .language-select {
+    padding: 4px 8px; /* Smaller padding for responsive design */
   }
 
   .lang-form {
     margin-left: 10px;
   }
-
-  .language-select {
-    padding: 4px 8px;
-    font-size: 0.8rem;
-  }
-
-  .profile-btn {
-    padding: 4px 8px;
-  }
-
-  .logout-btn {
-    padding: 4px 8px;
-    font-size: 0.8rem;
-  }
 }
 
-/* For very small screens */
 @media (max-width: 480px) {
+  .header-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
   .title {
-    display: none; /* Hide the title on very small screens */
+    display: none; /* Hide title on very small screens */
   }
 
   .username {
     display: none; /* Hide username on very small screens */
   }
 
-  .user-menu {
-    margin-right: 5px;
-  }
-
-  .profile-btn {
-    margin-right: 5px;
+  .nav-link,
+  .profile-btn,
+  .logout-btn,
+  .language-select {
+    padding: 4px 8px; /* Consistent padding for all buttons */
   }
 }
