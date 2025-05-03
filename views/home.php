@@ -1,8 +1,31 @@
-<h1>Top Anime</h1>
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title"><?php echo $translations['discover_anime']; ?></h1>
+        <p class="hero-description">
+            <?php echo $translations['hero_description'];?>
+        </p>
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="anime-search" 
+                class="search-input" 
+                placeholder="<?php echo $translations['search_placeholder']; ?>" 
+            />
+            <button id="search-button" class="search-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<h1><?php echo $translations['top_anime'] ?? 'Top Anime'; ?></h1>
 
 <div class="anime-list" id="anime-list">
     <?php foreach ($animes as $anime): ?>
-        <div class="anime-item">
+        <a href="index.php?content=animeDetails&id=<?php echo $anime['anime_id']; ?>" class="anime-item">
             <div class="anime-card">
                 <?php
                 $imageUrl = $anime['image_url'];
@@ -10,7 +33,7 @@
                 ?>
                 <h2><?php echo htmlspecialchars($anime['name']); ?></h2>
             </div>
-        </div>
+        </a>
     <?php endforeach; ?>
 </div>
 

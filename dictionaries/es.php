@@ -19,6 +19,17 @@ $translations = [
     'completed' => 'Completados',
     'plan_to_watch' => 'Planea Ver',
     'reviews' => 'Reseñas',
-    'not_logged_in' => 'No has iniciado sesión'
+    'not_logged_in' => 'No has iniciado sesión',
+    'discover_anime' => 'Bienvenido a IslaOtaku',
+    'hero_description' => 'Bienvenido a IslaOtaku, donde los aficionados del anime se reúnen para explorar, discutir y celebrar la animación japonesa. Descubre nuevas series, revive clásicos y comparte tu pasión con nuestra comunidad.',    'search_placeholder' => 'Buscar anime...',
+    'back_to_list' => 'Volver a la Lista',
+    'type' => 'Tipo',
+    'episodes' => 'Episodios',
+    'status' => 'Estado',
+    'release_date' => 'Fecha de Estreno',
+    'genres' => 'Géneros',
+    'synopsis' => 'Sinopsis',
+    'add_to_list' => 'Añadir a Mi Lista',
+    'write_review' => 'Escribir una Reseña',
 ];
 ?>

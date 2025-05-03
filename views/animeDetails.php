@@ -1,0 +1,83 @@
+<div class="anime-details-container">
+    <div class="back-link">
+        <a href="index.php" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <?php echo $translations['back_to_list'] ?? 'Back to List'; ?>
+        </a>
+    </div>
+
+    <div class="anime-details">
+        <div class="anime-image">
+            <img src="<?php echo htmlspecialchars($anime['image_url']); ?>" alt="<?php echo htmlspecialchars($anime['name']); ?>">
+        </div>
+        
+        <div class="anime-info">
+            <h1 class="anime-title"><?php echo htmlspecialchars($anime['name']); ?></h1>
+            
+            <table class="anime-details-table">
+                <?php if (isset($anime['type']) && !empty($anime['type'])): ?>
+                <tr>
+                    <th><?php echo $translations['type'] ?? 'Type'; ?>:</th>
+                    <td><?php echo htmlspecialchars($anime['type']); ?></td>
+                </tr>
+                <?php endif; ?>
+                
+                <?php if (isset($anime['num_episodes']) && $anime['num_episodes'] > 0): ?>
+                <tr>
+                    <th><?php echo $translations['episodes'] ?? 'Episodes'; ?>:</th>
+                    <td><?php echo htmlspecialchars($anime['num_episodes']); ?></td>
+                </tr>
+                <?php endif; ?>
+                
+                <?php if (isset($anime['status']) && !empty($anime['status'])): ?>
+                <tr>
+                    <th><?php echo $translations['status'] ?? 'Status'; ?>:</th>
+                    <td><?php echo htmlspecialchars($anime['status']); ?></td>
+                </tr>
+                <?php endif; ?>
+                
+                <?php if (isset($anime['release_date']) && !empty($anime['release_date'])): ?>
+                <tr>
+                    <th><?php echo $translations['release_date'] ?? 'Release Date'; ?>:</th>
+                    <td><?php echo date('F j, Y', strtotime($anime['release_date'])); ?></td>
+                </tr>
+                <?php endif; ?>
+                
+                <?php if (isset($anime['genres']) && !empty($anime['genres'])): ?>
+                <tr>
+                    <th><?php echo $translations['genres'] ?? 'Genres'; ?>:</th>
+                    <td><?php echo htmlspecialchars(implode(', ', $anime['genres'])); ?></td>
+                </tr>
+                <?php endif; ?>
+            </table>
+            
+            <?php if (isset($anime['synopsis']) && !empty($anime['synopsis'])): ?>
+            <div class="anime-synopsis">
+                <h2><?php echo $translations['synopsis'] ?? 'Synopsis'; ?></h2>
+                <p><?php echo nl2br(htmlspecialchars($anime['synopsis'])); ?></p>
+            </div>
+            <?php endif; ?>
+            
+            <?php if ($isLoggedIn): ?>
+            <div class="user-actions">
+                <button class="action-button add-to-list">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    <?php echo $translations['add_to_list'] ?? 'Add to My List'; ?>
+                </button>
+                
+                <button class="action-button write-review">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                    <?php echo $translations['write_review'] ?? 'Write a Review'; ?>
+                </button>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

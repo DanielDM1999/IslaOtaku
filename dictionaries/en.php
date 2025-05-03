@@ -19,6 +19,18 @@ $translations = [
     'completed' => 'Completed',
     'plan_to_watch' => 'Plan to Watch',
     'reviews' => 'Reviews',
-    'not_logged_in' => 'You are not logged in'
+    'not_logged_in' => 'You are not logged in',
+    'discover_anime' => 'Welcome to IslaOtaku',
+    'hero_description' => 'Welcome to IslaOtaku, where anime fans gather to explore, discuss, and celebrate Japanese animation. Discover new series, revisit classics, and share your passion with our community.',
+    'search_placeholder' => 'Search for anime...',
+    'back_to_list' => 'Back to List',
+    'type' => 'Type',
+    'episodes' => 'Episodes',
+    'status' => 'Status',
+    'release_date' => 'Release Date',
+    'genres' => 'Genres',
+    'synopsis' => 'Synopsis',
+    'add_to_list' => 'Add to My List',
+    'write_review' => 'Write a Review',
 ];
 ?>

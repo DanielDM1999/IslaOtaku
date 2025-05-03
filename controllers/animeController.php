@@ -17,5 +17,20 @@ class AnimeController {
     public function getTotalAnimesCount() {
         return $this->animeModel->getTotalAnimesCount();
     }
+    
+    public function searchAnimes($query) {
+        return $this->animeModel->searchAnimes($query);
+    }
+    
+    public function getAnimeDetails($animeId) {
+        $anime = $this->animeModel->getAnimeById($animeId);
+        
+        if ($anime) {
+            // Get genres if the anime exists
+            $anime['genres'] = $this->animeModel->getAnimeGenres($animeId);
+        }
+        
+        return $anime;
+    }
 }
 ?>

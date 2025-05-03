@@ -25,6 +25,15 @@ require_once(__DIR__ . '/controllers/AnimeController.php');
 $userController = new UserController();
 $animeController = new AnimeController();
 
+// Handle AJAX search request
+if (isset($_GET['action']) && $_GET['action'] === 'search' && isset($_GET['query'])) {
+    header('Content-Type: application/json');
+    $query = htmlspecialchars($_GET['query']);
+    $results = $animeController->searchAnimes($query);
+    echo json_encode($results);
+    exit();
+}
+
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     $userController->logout();
     header("Location: index.php");
@@ -33,7 +42,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 
 $content = isset($_GET['content']) ? $_GET['content'] : 'home';
 
-$allowedContent = ['home', 'login', 'register', 'profile', 'reviews'];
+$allowedContent = ['home', 'login', 'register', 'profile', 'reviews', 'animeDetails'];
 
 if (!in_array($content, $allowedContent)) {
     $content = 'home';
@@ -81,7 +90,17 @@ $isLoggedIn = $userController->isLoggedIn();
 $currentUser = $isLoggedIn ? $userController->getCurrentUser() : null;
 $userName = $isLoggedIn ? $currentUser['name'] : '';
 
-if ($content === 'home') {
+// Handle anime details page
+if ($content === 'animeDetails' && isset($_GET['id'])) {
+    $animeId = (int) $_GET['id'];
+    $anime = $animeController->getAnimeDetails($animeId);
+    
+    if (!$anime) {
+        // Anime not found, redirect to home
+        header("Location: index.php");
+        exit();
+    }
+} else if ($content === 'home') {
     $itemsPerPage = 24;
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     $page = max(1, $page);
@@ -108,9 +127,12 @@ if ($content === 'home') {
     <link rel="stylesheet" href="./public/css/footer.css">
     <link rel="stylesheet" href="./public/css/login.css">
     <link rel="stylesheet" href="./public/css/register.css">
-    <link rel="stylesheet" href="./public/css/profile.css">
+    <link rel="stylesheet" href="./public/css/hero.css">
+    <?php if ($content === 'animeDetails'): ?>
+    <link rel="stylesheet" href="./public/css/animeDetails.css">
+    <?php endif; ?>
     
-    <title>IslaOtaku</title>
+    <title>IslaOtaku<?php echo ($content === 'animeDetails' && isset($anime)) ? ' - ' . htmlspecialchars($anime['name']) : ''; ?></title>
 </head>
 
 <body>
@@ -164,6 +186,9 @@ if ($content === 'home') {
             case 'reviews':
                 include(__DIR__ . '/views/reviews.php');
                 break;
+            case 'animeDetails':
+                include(__DIR__ . '/views/animeDetails.php');
+                break;
             default:
                 include(__DIR__ . '/views/home.php');
                 break;
@@ -184,6 +209,7 @@ if ($content === 'home') {
 
     <?php if ($content === 'home'): ?>
         <script src="./public/js/cards.js"></script>
+        <script src="./public/js/search.js"></script>
     <?php endif; ?>
     <script src="./public/js/auth.js"></script>
 </body>

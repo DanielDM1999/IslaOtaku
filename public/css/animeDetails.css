@@ -1,0 +1,148 @@
+.anime-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .back-link {
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  
+  .back-button:hover {
+    color: #ff6b6b;
+  }
+  
+  .back-button svg {
+    margin-right: 8px;
+  }
+  
+  .anime-details {
+    display: flex;
+    gap: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .anime-image {
+    flex: 0 0 300px;
+  }
+  
+  .anime-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+  
+  .anime-info {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .anime-title {
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .anime-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .anime-details-table th,
+  .anime-details-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .anime-details-table th {
+    width: 150px;
+    color: #666;
+    font-weight: 600;
+  }
+  
+  .anime-synopsis {
+    margin-top: 20px;
+  }
+  
+  .anime-synopsis h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .anime-synopsis p {
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  .user-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  
+  .action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 4px;
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .action-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .add-to-list {
+    background-color: #ff6b6b;
+    color: white;
+  }
+  
+  .add-to-list:hover {
+    background-color: #ff5252;
+  }
+  
+  .write-review {
+    background-color: #f5f5f5;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .anime-details {
+      flex-direction: column;
+    }
+  
+    .anime-image {
+      flex: 0 0 auto;
+      max-width: 100%;
+    }
+  
+    .anime-image img {
+      max-height: 400px;
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+  
