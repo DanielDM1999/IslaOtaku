@@ -212,6 +212,9 @@ if ($content === 'animeDetails' && isset($_GET['id'])) {
         <script src="./public/js/search.js"></script>
     <?php endif; ?>
     <script src="./public/js/auth.js"></script>
+    <?php if ($content === 'animeDetails'): ?>
+        <script src="./public/js/synopsis.js"></script>
+    <?php endif; ?>
 </body>
 
 </html>

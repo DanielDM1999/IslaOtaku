@@ -1,9 +1,7 @@
 <div class="anime-details-container">
     <div class="back-link">
         <a href="index.php" class="back-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
+            <!-- SVG Back Icon -->
             <?php echo $translations['back_to_list'] ?? 'Back to List'; ?>
         </a>
     </div>
@@ -53,13 +51,15 @@
                 <?php endif; ?>
             </table>
             
-            <?php if (isset($anime['synopsis']) && !empty($anime['synopsis'])): ?>
             <div class="anime-synopsis">
                 <h2><?php echo $translations['synopsis'] ?? 'Synopsis'; ?></h2>
-                <p><?php echo nl2br(htmlspecialchars($anime['synopsis'])); ?></p>
+                <p class="synopsis-text" 
+                   data-full-synopsis="<?php echo htmlspecialchars($anime['synopsis']); ?>">
+                   <?php echo nl2br(htmlspecialchars(substr($anime['synopsis'], 0, 150))); ?>...
+                </p>
+                <button class="toggle-synopsis"><?php echo $translations['show_more'] ?? 'Show More'; ?></button>
             </div>
-            <?php endif; ?>
-            
+
             <?php if ($isLoggedIn): ?>
             <div class="user-actions">
                 <button class="action-button add-to-list">
