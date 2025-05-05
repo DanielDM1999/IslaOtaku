@@ -1,133 +1,156 @@
 /* Hero Section Styles */
 .hero-section {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    background-image: url("../images/banner.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin-bottom: 40px;
-    border-radius: 8px;
-    overflow: hidden;
+  position: relative;
+  width: 100%;
+  min-height: 400px; /* Use min-height instead of fixed height */
+  background-image: url("../images/banner.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex; /* Make sure the section is flexible */
+  flex-direction: column;
+  justify-content: center; /* Center the content vertically */
+  padding-bottom: 60px; /* Ensure space for the search bar */
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.hero-content {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  text-align: center;
+  color: #fff;
+  z-index: 1; /* Ensure the content appears above the background */
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Search Bar Styles */
+.search-container {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.9); /* Subtle background for contrast */
+}
+
+.search-input {
+  flex-grow: 1; /* Ensures the input takes all available space */
+  padding: 15px 20px;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+  min-width: 0; /* Prevents input from pushing the button off-screen */
+}
+
+.search-button {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 0 25px;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px; /* Ensures the button has a minimum size */
+}
+
+.search-button:hover {
+  background: #ff5252;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Loading and Error States */
+.loading,
+.error,
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  color: #ff5252;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 350px; /* Adjusted height for smaller screens */
   }
-  
-  .hero-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-  }
-  
-  .hero-content {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 60px 20px;
-    text-align: center;
-    color: #fff;
-  }
-  
+
   .hero-title {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 2rem;
   }
-  
+
   .hero-description {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-    line-height: 1.6;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  }
-  
-  /* Search Bar Styles */
-  .search-container {
-    display: flex;
-    max-width: 500px;
-    margin: 0 auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 50px;
-    overflow: hidden;
-  }
-  
-  .search-input {
-    flex: 1;
-    padding: 15px 20px;
-    border: none;
     font-size: 1rem;
-    outline: none;
   }
-  
+
+  .search-container {
+    max-width: 400px; /* Slightly smaller search bar */
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    min-height: 300px; /* Further adjust height */
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .search-container {
+    width: 90%; /* Search bar remains responsive and centered */
+    max-width: 90%; /* Limit the bar to fit smaller screens */
+  }
+
+  .search-input {
+    padding: 12px 10px;
+    font-size: 0.9rem;
+  }
+
   .search-button {
-    background: #ff6b6b;
-    color: white;
-    border: none;
-    padding: 0 25px;
-    cursor: pointer;
-    transition: background 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0 15px;
+    font-size: 1rem;
+    flex-shrink: 0; /* Prevent the button from shrinking */
   }
-  
-  .search-button:hover {
-    background: #ff5252;
-  }
-  
-  .search-icon {
-    width: 20px;
-    height: 20px;
-  }
-  
-  /* Loading and Error States */
-  .loading,
-  .error,
-  .no-results {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 40px;
-    font-size: 1.2rem;
-    color: #666;
-  }
-  
-  .error {
-    color: #ff5252;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .hero-section {
-      height: 350px;
-    }
-  
-    .hero-title {
-      font-size: 2rem;
-    }
-  
-    .hero-description {
-      font-size: 1rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .hero-section {
-      height: 300px;
-    }
-  
-    .hero-title {
-      font-size: 1.8rem;
-    }
-  
-    .search-input {
-      padding: 12px 15px;
-    }
-  
-    .search-button {
-      padding: 0 15px;
-    }
-  }
-  
+}
