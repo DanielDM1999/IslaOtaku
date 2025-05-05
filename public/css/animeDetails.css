@@ -2,123 +2,170 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-}
-
-.back-link {
+  }
+  
+  .back-link {
     margin-bottom: 20px;
-}
-
-.back-button {
+  }
+  
+  .back-button {
     display: inline-flex;
     align-items: center;
     color: #555;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
-}
-
-.back-button:hover {
+  }
+  
+  .back-button:hover {
     color: #ff6b6b;
-}
-
-.back-button svg {
+  }
+  
+  .back-button svg {
     margin-right: 8px;
-}
-
-.anime-details {
-    display: flex;
-    gap: 30px;
+  }
+  
+  /* Single card container */
+  .anime-details-card {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-}
-
-.anime-image {
-    flex: 0 0 300px;
-}
-
-.anime-image img {
+  }
+  
+  /* Top section: Image and basic info */
+  .anime-header {
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+  }
+  
+  .anime-image-container {
+    flex: 0 0 250px; /* Fixed width for the image container */
+  }
+  
+  .anime-poster {
     width: 100%;
     height: auto;
     display: block;
-    object-fit: cover;
-}
-
-.anime-info {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .anime-basic-info {
     flex: 1;
-    padding: 20px;
-}
-
-.anime-title {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .anime-title {
     font-size: 2rem;
     margin-top: 0;
     margin-bottom: 20px;
     color: #333;
-}
-
-.anime-details-table {
+  }
+  
+  .anime-details-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-}
-
-.anime-details-table th,
-.anime-details-table td {
+  }
+  
+  .anime-details-table th,
+  .anime-details-table td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #eee;
-}
-
-.anime-details-table th {
+  }
+  
+  .anime-details-table th {
     width: 150px;
     color: #666;
     font-weight: 600;
-}
-
-.anime-synopsis {
-    margin-top: 20px;
-}
-
-.anime-synopsis h2 {
+  }
+  
+  /* Divider between sections */
+  .section-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 0 20px;
+  }
+  
+  /* Bottom section: Synopsis */
+  .anime-synopsis-section {
+    padding: 20px;
+    position: relative;
+  }
+  
+  .anime-synopsis-section h2 {
     font-size: 1.5rem;
-    margin-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 15px;
     color: #333;
-}
-
-.anime-synopsis p {
+  }
+  
+  /* Synopsis container with smooth transition */
+  .synopsis-wrapper {
+    position: relative;
+    overflow: hidden;
+    transition: height 0.3s ease-out;
+    height: 50px; /* Reduced initial height */
+  }
+  
+  .synopsis-short,
+  .synopsis-full {
     line-height: 1.6;
     color: #555;
-    max-height: 4.8em; /* For the first 3 lines */
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.synopsis-text.expanded {
-    max-height: none;
-}
-
-.toggle-synopsis {
-    margin-top: 0.5rem;
+  }
+  
+  .synopsis-short p,
+  .synopsis-full p {
+    margin: 0;
+  }
+  
+  .synopsis-full {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    visibility: hidden;
+  }
+  
+  .toggle-synopsis {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px; /* Reduced top margin */
     background: none;
     border: none;
-    color: #007BFF;
+    color: #007bff;
     cursor: pointer;
     font-weight: bold;
     padding: 0;
-}
-
-.toggle-synopsis:hover {
-    text-decoration: underline;
-}
-
-.user-actions {
+    transition: color 0.2s;
+  }
+  
+  .toggle-synopsis:hover {
+    color: #0056b3;
+  }
+  
+  .toggle-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .toggle-synopsis.expanded .toggle-icon {
+    transform: rotate(180deg);
+  }
+  
+  .user-actions {
     display: flex;
     gap: 10px;
-    margin-top: 30px;
-}
-
-.action-button {
+    margin-top: auto; /* Push to bottom of flex container */
+    padding-top: 20px;
+  }
+  
+  .action-button {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -130,39 +177,39 @@
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
-}
-
-.action-button:hover {
+  }
+  
+  .action-button:hover {
     background-color: #e0e0e0;
-}
-
-.add-to-list {
+  }
+  
+  .add-to-list {
     background-color: #ff6b6b;
     color: white;
-}
-
-.add-to-list:hover {
+  }
+  
+  .add-to-list:hover {
     background-color: #ff5252;
-}
-
-.write-review {
+  }
+  
+  .write-review {
     background-color: #f5f5f5;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-    .anime-details {
-        flex-direction: column;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .anime-header {
+      flex-direction: column;
     }
-
-    .anime-image {
-        flex: 0 0 auto;
-        max-width: 100%;
+  
+    .anime-image-container {
+      flex: 0 0 auto;
+      max-width: 250px;
+      margin: 0 auto 20px;
     }
-
-    .anime-image img {
-        max-height: 400px;
-        width: 100%;
-        object-fit: contain;
+  
+    .anime-details-table th {
+      width: 120px;
     }
-}
+  }
+  
