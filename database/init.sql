@@ -9,10 +9,11 @@ CREATE DATABASE IF NOT EXISTS isla_otaku
 USE isla_otaku;
 
 -- ================================================
--- 1. Users Table
+-- 1. Users Table (with Profile Picture First)
 -- ================================================
 CREATE TABLE IF NOT EXISTS Users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
+    profile_picture VARCHAR(255) DEFAULT NULL,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
@@ -20,6 +21,7 @@ CREATE TABLE IF NOT EXISTS Users (
 ) ENGINE=InnoDB 
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_general_ci;
+
 
 -- ================================================
 -- 2. Animes Table

@@ -21,22 +21,29 @@ class UserModel {
     }
 
     public function createUser($name, $email, $hashedPassword) {
-        $stmt = $this->conn->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+        $profilePicture = 'default.jpg';
+    
+        $stmt = $this->conn->prepare("INSERT INTO users (name, email, password, profile_picture) VALUES (:name, :email, :password, :profile_picture)");
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':profile_picture', $profilePicture, PDO::PARAM_STR);  // Add default profile picture
+    
         if ($stmt->execute()) {
             return $this->conn->lastInsertId();
         }
         return false;
     }
+    
+    
 
     public function getUserById($userId) {
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $stmt = $this->conn->prepare("SELECT user_id, name, email, profile_picture FROM users WHERE user_id = :user_id");
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
 
     public function getUserAnimeList($userId, $status = null) {
         $query = "SELECT * FROM anime_list WHERE user_id = :user_id";

@@ -10,7 +10,7 @@ if (isset($_POST['lang'])) {
     setcookie('lang', $lang, time() + (86400 * 30), "/");
 
     $queryParams = $_GET;
-    $queryParams['lang'] = $lang; 
+    $queryParams['lang'] = $lang;
     $redirectUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($queryParams);
 
     header("Location: $redirectUrl");
@@ -94,7 +94,7 @@ $userName = $isLoggedIn ? $currentUser['name'] : '';
 if ($content === 'animeDetails' && isset($_GET['id'])) {
     $animeId = (int) $_GET['id'];
     $anime = $animeController->getAnimeDetails($animeId);
-    
+
     if (!$anime) {
         // Anime not found, redirect to home
         header("Location: index.php");
@@ -120,7 +120,7 @@ if ($content === 'animeDetails' && isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link rel="stylesheet" href="./public/css/globals.css">
     <link rel="stylesheet" href="./public/css/header.css">
     <link rel="stylesheet" href="./public/css/content.css">
@@ -129,46 +129,54 @@ if ($content === 'animeDetails' && isset($_GET['id'])) {
     <link rel="stylesheet" href="./public/css/register.css">
     <link rel="stylesheet" href="./public/css/hero.css">
     <?php if ($content === 'animeDetails'): ?>
-    <link rel="stylesheet" href="./public/css/animeDetails.css">
+        <link rel="stylesheet" href="./public/css/animeDetails.css">
     <?php endif; ?>
-    
-    <title>IslaOtaku<?php echo ($content === 'animeDetails' && isset($anime)) ? ' - ' . htmlspecialchars($anime['name']) : ''; ?></title>
+
+    <title>
+        IslaOtaku<?php echo ($content === 'animeDetails' && isset($anime)) ? ' - ' . htmlspecialchars($anime['name']) : ''; ?>
+    </title>
 </head>
 
 <body>
-<header class="header">
-    <div class="header-container">
-        <div class="logo-title">
-            <a href="index.php" class="logo-link">
-                <img src="./public/images/icon.png" alt="Logo" class="logo-img">
-                <h1 class="title">IslaOtaku</h1>
-            </a>
-        </div>
-        
-        <nav class="nav">
-            <?php if ($isLoggedIn): ?>
-                <div class="user-menu">
-                    <a href="index.php?content=profile" class="nav-link user-btn">
-                        <span class="username"><?php echo htmlspecialchars($userName); ?></span>
-                    </a>
-                    <a href="index.php?action=logout" class="nav-link logout-btn">
-                        <?php echo $translations['logout']; ?>
-                    </a>
-                </div>
-            <?php else: ?>
-                <a href="index.php?content=login" class="nav-link"><?php echo $translations['login']; ?></a>
-                <a href="index.php?content=register" class="nav-link"><?php echo $translations['register']; ?></a>
-            <?php endif; ?>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-title">
+                <a href="index.php" class="logo-link">
+                    <img src="./public/images/icon.png" alt="Logo" class="logo-img">
+                    <h1 class="title">IslaOtaku</h1>
+                </a>
+            </div>
 
-            <form action="" method="post" class="lang-form">
-                <select class="language-select" name="lang" onchange="this.form.submit()">
-                    <option value="en" <?php echo ($lang == 'en') ? 'selected' : ''; ?>>English</option>
-                    <option value="es" <?php echo ($lang == 'es') ? 'selected' : ''; ?>>Español</option>
-                </select>
-            </form>
-        </nav>
-    </div>
-</header>
+            <nav class="nav">
+                <?php if ($isLoggedIn): ?>
+                    <div class="user-menu">
+                        <a href="index.php?content=profile" class="user-btn">
+                        <img src="./uploads/profilePictures/<?php echo isset($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'default.jpg'; ?>"
+                                alt="User" class="user-icon">
+                        </a>
+
+                        <a href="index.php?content=profile" class="nav-link user-btn">
+                            <span class="username"><?php echo htmlspecialchars($userName); ?></span>
+                        </a>
+
+                        <a href="index.php?action=logout" class="nav-link logout-btn">
+                            <?php echo $translations['logout']; ?>
+                        </a>
+                    </div>
+                <?php else: ?>
+                    <a href="index.php?content=login" class="nav-link"><?php echo $translations['login']; ?></a>
+                    <a href="index.php?content=register" class="nav-link"><?php echo $translations['register']; ?></a>
+                <?php endif; ?>
+
+                <form action="" method="post" class="lang-form">
+                    <select class="language-select" name="lang" onchange="this.form.submit()">
+                        <option value="en" <?php echo ($lang == 'en') ? 'selected' : ''; ?>>English</option>
+                        <option value="es" <?php echo ($lang == 'es') ? 'selected' : ''; ?>>Español</option>
+                    </select>
+                </form>
+            </nav>
+        </div>
+    </header>
 
 
     <div class="content">
