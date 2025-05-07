@@ -5,12 +5,15 @@
     <?php endif; ?>
     <form action="index.php?content=login" method="POST">
         <label for="email"><?php echo $translations['email']; ?>:</label>
-        <input type="email" id="email" name="email" required>
-        
+        <input type="email" id="email" name="email" value="<?php echo isset($email) ? htmlspecialchars($email) : ''; ?>">
+        <div class="error-message" id="login-email-error"><?php echo isset($errors['email']) ? $translations[$errors['email']] : ''; ?></div>
+
         <label for="password"><?php echo $translations['password']; ?>:</label>
-        <input type="password" id="password" name="password" required>
-        
+        <input type="password" id="password" name="password">
+        <div class="error-message" id="login-password-error"><?php echo isset($errors['password']) ? $translations[$errors['password']] : ''; ?></div>
+
         <button type="submit"><?php echo $translations['login']; ?></button>
-        <p class="form-link"><?php echo $translations['no_account']; ?> <a href="index.php?content=register"><?php echo $translations['register']; ?></a></p>
+        <p class="form-link"><?php echo $translations['no_account']; ?> 
+        <a href="index.php?content=register"><?php echo $translations['register']; ?></a></p>
     </form>
 </div>

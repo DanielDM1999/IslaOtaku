@@ -32,5 +32,12 @@ $translations = [
     'synopsis' => 'Synopsis',
     'add_to_list' => 'Add to My List',
     'write_review' => 'Write a Review',
+    'required_fields' => 'All fields are required.',
+    'invalid_email' => 'Please enter a valid email address.',
+    'passwords_mismatch' => 'Passwords do not match.',
+    'email_taken' => 'Email is already in use.',
+    'name_taken' => 'Username already taken.',
+    'registration_failed' => 'Registration failed.',
+    'invalid_login' => 'Invalid email or password.',
 ];
 ?>
