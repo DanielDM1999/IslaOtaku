@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
           data.forEach((anime) => {
             const animeItem = document.createElement("a")
             animeItem.className = "anime-item"
-            animeItem.href = `index.php?content=anime-details&id=${anime.anime_id}`
+            animeItem.href = `index.php?content=animeDetails&id=${anime.anime_id}`
             animeItem.innerHTML = `
               <div class="anime-card">
                   <img src="${anime.image_url}" alt="${anime.name}" class="anime-img">
