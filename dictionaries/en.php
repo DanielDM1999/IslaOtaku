@@ -39,5 +39,15 @@ $translations = [
     'name_taken' => 'Username already taken.',
     'registration_failed' => 'Registration failed.',
     'invalid_login' => 'Invalid email or password.',
+    'profile_info' => 'Profile Information',
+    'edit' => 'Edit',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'profile_updated' => 'Profile updated successfully',
+    'all_fields_required' => 'All fields are required',
+    'email_in_use' => 'Email already in use by another account',
+    'recent_activity' => 'Recent Activity',
+    'change_picture' => 'Change Picture',
+    'save_picture' => 'Save Picture',
 ];
 ?>
