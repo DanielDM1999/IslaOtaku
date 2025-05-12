@@ -1,8 +1,10 @@
 <?php
+// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Language handling: determine and set language preference
 $lang = isset($_COOKIE['lang']) ? $_COOKIE['lang'] : 'es';
 
 if (isset($_POST['lang'])) {
@@ -17,15 +19,17 @@ if (isset($_POST['lang'])) {
     exit;
 }
 
+// Load the appropriate language dictionary
 include(__DIR__ . "/dictionaries/$lang.php");
 
+// Include controllers for user and anime functionalities
 require_once(__DIR__ . '/controllers/UserController.php');
 require_once(__DIR__ . '/controllers/AnimeController.php');
 
 $userController = new UserController();
 $animeController = new AnimeController();
 
-// Handle AJAX search request
+// Handle AJAX search requests for anime
 if (isset($_GET['action']) && $_GET['action'] === 'search' && isset($_GET['query'])) {
     header('Content-Type: application/json');
     $query = htmlspecialchars($_GET['query']);
@@ -34,26 +38,29 @@ if (isset($_GET['action']) && $_GET['action'] === 'search' && isset($_GET['query
     exit();
 }
 
+// Handle user logout
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     $userController->logout();
     header("Location: index.php");
     exit();
 }
 
+// Determine the content to load based on query parameters
 $content = isset($_GET['content']) ? $_GET['content'] : 'home';
-
 $allowedContent = ['home', 'login', 'register', 'profile', 'reviews', 'animeDetails'];
 
 if (!in_array($content, $allowedContent)) {
     $content = 'home';
 }
 
+// Redirect to login if accessing restricted pages without authentication
 if (in_array($content, ['profile', 'my-reviews']) && !$userController->isLoggedIn()) {
     $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
     header("Location: index.php?content=login");
     exit();
 }
 
+// Handle login form submission
 $loginError = '';
 if ($content === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['password'])) {
     $email = $_POST['email'] ?? '';
@@ -69,6 +76,7 @@ if ($content === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POS
     }
 }
 
+// Handle registration form submission
 $registerError = '';
 if ($content === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'], $_POST['email'])) {
     $name = $_POST['name'] ?? '';
@@ -86,21 +94,22 @@ if ($content === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_
     }
 }
 
+// Check user authentication status
 $isLoggedIn = $userController->isLoggedIn();
 $currentUser = $isLoggedIn ? $userController->getCurrentUser() : null;
 $userName = $isLoggedIn ? $currentUser['name'] : '';
 
-// Handle anime details page
+// Handle anime details page logic
 if ($content === 'animeDetails' && isset($_GET['id'])) {
     $animeId = (int) $_GET['id'];
     $anime = $animeController->getAnimeDetails($animeId);
 
     if (!$anime) {
-        // Anime not found, redirect to home
         header("Location: index.php");
         exit();
     }
 } else if ($content === 'home') {
+    // Pagination logic for the homepage anime list
     $itemsPerPage = 24;
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     $page = max(1, $page);
@@ -111,6 +120,57 @@ if ($content === 'animeDetails' && isset($_GET['id'])) {
     $totalPages = ceil($totalAnimes / $itemsPerPage);
 
     $page = min($page, max(1, $totalPages));
+}
+
+// Handle profile updates (including profile picture upload)
+$updateSuccess = false;
+$profileUpdateError = '';
+
+if ($content === 'profile' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['update_profile'])) {
+        // Update profile information
+        $name = $_POST['name'] ?? '';
+        $email = $_POST['email'] ?? '';
+
+        if (empty($name) || empty($email)) {
+            $profileUpdateError = $translations['all_fields_required'] ?? 'All fields are required';
+        } else {
+            $result = $userController->updateUserProfile($currentUser['user_id'], $name, $email);
+            if ($result === true) {
+                $updateSuccess = true;
+                $currentUser = $userController->getCurrentUser();
+            } else {
+                $profileUpdateError = $result;
+            }
+        }
+    } elseif (isset($_POST['update_picture']) && isset($_FILES['profile_picture'])) {
+        // Update profile picture
+        $result = $userController->updateProfilePicture($currentUser['user_id'], $_FILES['profile_picture']);
+        if ($result === true) {
+            $updateSuccess = true;
+            $currentUser = $userController->getCurrentUser();
+        } else {
+            $profileUpdateError = $result;
+        }
+    }
+}
+
+// Ensure the default profile picture exists
+$defaultImagePath = __DIR__ . '/uploads/profilePictures/default.jpg';
+if (!file_exists($defaultImagePath)) {
+    if (!file_exists(dirname($defaultImagePath))) {
+        mkdir(dirname($defaultImagePath), 0777, true);
+    }
+
+    if (function_exists('imagecreatetruecolor')) {
+        $image = imagecreatetruecolor(200, 200);
+        $bgColor = imagecolorallocate($image, 240, 240, 240);
+        $textColor = imagecolorallocate($image, 100, 100, 100);
+        imagefill($image, 0, 0, $bgColor);
+        imagestring($image, 5, 40, 80, 'No Image', $textColor);
+        imagejpeg($image, $defaultImagePath);
+        imagedestroy($image);
+    }
 }
 ?>
 
@@ -130,6 +190,9 @@ if ($content === 'animeDetails' && isset($_GET['id'])) {
     <link rel="stylesheet" href="./public/css/hero.css">
     <?php if ($content === 'animeDetails'): ?>
         <link rel="stylesheet" href="./public/css/animeDetails.css">
+    <?php endif; ?>
+    <?php if ($content === 'profile'): ?>
+        <link rel="stylesheet" href="./public/css/profile.css">
     <?php endif; ?>
 
     <title>
@@ -151,7 +214,14 @@ if ($content === 'animeDetails' && isset($_GET['id'])) {
                 <?php if ($isLoggedIn): ?>
                     <div class="user-menu">
                         <a href="index.php?content=profile" class="user-btn">
-                        <img src="./uploads/profilePictures/<?php echo isset($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'default.jpg'; ?>"
+                            <?php
+                            // Determine the profile picture path
+                            $profilePicturePath = 'default.jpg'; // Default image
+                            if (isset($currentUser['profile_picture']) && !empty($currentUser['profile_picture'])) {
+                                $profilePicturePath = $currentUser['profile_picture'];
+                            }
+                            ?>
+                            <img src="./uploads/profilePictures/<?php echo htmlspecialchars($profilePicturePath); ?>"
                                 alt="User" class="user-icon">
                         </a>
 
@@ -222,6 +292,9 @@ if ($content === 'animeDetails' && isset($_GET['id'])) {
     <script src="./public/js/auth.js"></script>
     <?php if ($content === 'animeDetails'): ?>
         <script src="./public/js/synopsis.js"></script>
+    <?php endif; ?>
+    <?php if ($content === 'profile'): ?>
+        <script src="./public/js/profile.js"></script>
     <?php endif; ?>
 </body>
 
