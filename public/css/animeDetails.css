@@ -263,6 +263,9 @@
       margin-bottom: 10px; /* Adjust margin for better spacing */
   }
 
+  .anime-details-container {
+    padding: 0;
+  }
   .anime-image-container {
       max-width: 200px;
       margin: 0 auto 20px; /* Center image */
