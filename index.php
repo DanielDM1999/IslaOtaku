@@ -291,6 +291,9 @@ if (!file_exists($defaultImagePath)) {
     <?php endif; ?>
     <script src="./public/js/auth.js"></script>
     <?php if ($content === 'animeDetails'): ?>
+        <script>
+            const translations = <?php echo json_encode($translations); ?>;
+        </script>
         <script src="./public/js/synopsis.js"></script>
     <?php endif; ?>
     <?php if ($content === 'profile'): ?>

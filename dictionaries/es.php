@@ -49,5 +49,7 @@ $translations = [
     'recent_activity' => 'Actividad Reciente',
     'change_picture' => 'Cambiar Imagen',
     'save_picture' => 'Guardar Imagen',
+    'show_more' => 'Mostrar Más',
+    'show_less' => 'Mostrar Menos',
 ];
 ?>
