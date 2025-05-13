@@ -1,215 +1,335 @@
 .anime-details-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .back-link {
-    margin-bottom: 20px;
-  }
-  
-  .back-button {
-    display: inline-flex;
-    align-items: center;
-    color: #555;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s;
-  }
-  
-  .back-button:hover {
-    color: #ff6b6b;
-  }
-  
-  .back-button svg {
-    margin-right: 8px;
-  }
-  
-  /* Single card container */
-  .anime-details-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-  }
-  
-  /* Top section: Image and basic info */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.back-link {
+  margin-bottom: 20px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  color: #555;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.back-button:hover {
+  color: #ff6b6b;
+}
+
+.back-button svg {
+  margin-right: 8px;
+}
+
+/* Single card container */
+.anime-details-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Top section: Image and basic info */
+.anime-header {
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+}
+
+.anime-image-container {
+  flex: 0 0 250px; /* Fixed width for the image container */
+}
+
+.anime-poster {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.anime-basic-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.anime-title {
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.anime-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.anime-details-table th,
+.anime-details-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.anime-details-table th {
+  width: 150px;
+  color: #666;
+  font-weight: 600;
+}
+
+/* Divider between sections */
+.section-divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 0 20px;
+}
+
+/* Bottom section: Synopsis */
+.anime-synopsis-section {
+  padding: 20px;
+  position: relative;
+}
+
+.anime-synopsis-section h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Synopsis container with smooth transition */
+.synopsis-wrapper {
+  position: relative;
+  overflow: hidden;
+  transition: height 0.3s ease-out;
+  height: 50px; /* Reduced initial height */
+}
+
+.synopsis-short,
+.synopsis-full {
+  line-height: 1.6;
+  color: #555;
+}
+
+.synopsis-short p,
+.synopsis-full p {
+  margin: 0;
+}
+
+.synopsis-full {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  visibility: hidden;
+}
+
+.toggle-synopsis {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px; /* Reduced top margin */
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.toggle-synopsis:hover {
+  color: #0056b3;
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.toggle-synopsis.expanded .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.user-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto; /* Push to bottom of flex container */
+  padding-top: 20px;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: #e0e0e0;
+}
+
+.add-to-list {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.add-to-list:hover {
+  background-color: #ff5252;
+}
+
+.write-review {
+  background-color: #f5f5f5;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
   .anime-header {
-    display: flex;
-    gap: 30px;
-    padding: 20px;
-  }
-  
-  .anime-image-container {
-    flex: 0 0 250px; /* Fixed width for the image container */
-  }
-  
-  .anime-poster {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .anime-basic-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .anime-title {
-    font-size: 2rem;
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .anime-details-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .anime-details-table th,
-  .anime-details-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .anime-details-table th {
-    width: 150px;
-    color: #666;
-    font-weight: 600;
-  }
-  
-  /* Divider between sections */
-  .section-divider {
-    height: 1px;
-    background-color: #eee;
-    margin: 0 20px;
-  }
-  
-  /* Bottom section: Synopsis */
-  .anime-synopsis-section {
-    padding: 20px;
-    position: relative;
-  }
-  
-  .anime-synopsis-section h2 {
-    font-size: 1.5rem;
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #333;
-  }
-  
-  /* Synopsis container with smooth transition */
-  .synopsis-wrapper {
-    position: relative;
-    overflow: hidden;
-    transition: height 0.3s ease-out;
-    height: 50px; /* Reduced initial height */
-  }
-  
-  .synopsis-short,
-  .synopsis-full {
-    line-height: 1.6;
-    color: #555;
-  }
-  
-  .synopsis-short p,
-  .synopsis-full p {
-    margin: 0;
-  }
-  
-  .synopsis-full {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    visibility: hidden;
-  }
-  
-  .toggle-synopsis {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 5px; /* Reduced top margin */
-    background: none;
-    border: none;
-    color: #007bff;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 0;
-    transition: color 0.2s;
-  }
-  
-  .toggle-synopsis:hover {
-    color: #0056b3;
-  }
-  
-  .toggle-icon {
-    transition: transform 0.3s ease;
-  }
-  
-  .toggle-synopsis.expanded .toggle-icon {
-    transform: rotate(180deg);
-  }
-  
-  .user-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: auto; /* Push to bottom of flex container */
-    padding-top: 20px;
-  }
-  
-  .action-button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background-color: #f5f5f5;
-    border: none;
-    border-radius: 4px;
-    color: #333;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .action-button:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .add-to-list {
-    background-color: #ff6b6b;
-    color: white;
-  }
-  
-  .add-to-list:hover {
-    background-color: #ff5252;
-  }
-  
-  .write-review {
-    background-color: #f5f5f5;
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .anime-header {
       flex-direction: column;
-    }
-  
-    .anime-image-container {
+      gap: 20px; /* Adjust gap for better spacing on small screens */
+      padding: 20px 10px; /* Adjust padding for smaller screens */
+  }
+
+  .anime-image-container {
       flex: 0 0 auto;
       max-width: 250px;
       margin: 0 auto 20px;
-    }
-  
-    .anime-details-table th {
-      width: 120px;
-    }
   }
-  
+
+  .anime-details-table th {
+      width: 120px;
+  }
+
+  .anime-details-table td {
+      padding: 8px; /* Reduce padding for smaller screens */
+  }
+
+  .anime-title {
+      font-size: 1.8rem;
+      margin-top: 10px;
+  }
+
+  .anime-poster {
+      width: 100%;
+      height: auto;
+  }
+
+  .user-actions {
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px; /* Add more space between actions */
+  }
+
+  .action-button {
+      padding: 8px 12px;
+      font-size: 14px; /* Adjust font size for smaller screens */
+  }
+
+  .toggle-synopsis {
+      font-size: 14px; /* Adjust text size */
+      padding: 0;
+  }
+
+  .synopsis-wrapper {
+      height: auto; /* Allow it to expand as needed */
+      padding-bottom: 15px; /* Ensure there is space at the bottom */
+  }
+}
+
+/* Smaller Screens - Below 480px */
+@media (max-width: 480px) {
+  .anime-header {
+      flex-direction: column;
+      gap: 15px; /* Adjust gap for more compact layout */
+      padding: 10px; /* Reduce padding */
+  }
+
+  .anime-title {
+      font-size: 1.5rem; /* Adjust title font size */
+      margin-bottom: 10px; /* Adjust margin for better spacing */
+  }
+
+  .anime-image-container {
+      max-width: 200px;
+      margin: 0 auto 20px; /* Center image */
+  }
+
+  .anime-details-table th {
+      width: 100px;
+      font-size: 14px; /* Adjust table heading font size */
+  }
+
+  .anime-details-table td {
+      font-size: 14px; /* Adjust table data font size */
+      padding: 6px; /* Reduce padding */
+  }
+
+  .action-button {
+      padding: 6px 10px;
+      font-size: 12px; /* Adjust font size for buttons */
+      gap: 6px; /* Adjust gap between icon and text */
+  }
+
+  .toggle-synopsis {
+      font-size: 12px; /* Reduce font size for tiny screens */
+  }
+
+  .anime-poster {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px; /* Add spacing between image and other content */
+  }
+
+  .user-actions {
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 10px;
+  }
+}
+
+/* Very small screens below 330px */
+@media (max-width: 330px) {
+  .anime-header {
+      padding: 10px 5px; /* Reduce padding more for tiny screens */
+  }
+
+  .anime-title {
+      font-size: 1.2rem; /* Adjust font size for small screens */
+  }
+
+  .anime-image-container {
+      max-width: 150px;
+  }
+
+  .anime-details-table th {
+      width: 80px; /* Further reduce width of table headings */
+  }
+
+  .anime-details-table td {
+      font-size: 12px; /* Further reduce font size */
+      padding: 4px; /* Further reduce padding */
+  }
+
+  .action-button {
+      padding: 4px 8px; /* Reduce button padding */
+      font-size: 12px;
+  }
+
+  .toggle-synopsis {
+      font-size: 12px; /* Reduce font size for tiny screens */
+  }
+}

@@ -128,54 +128,60 @@
   background-color: var(--accent);
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-  .header-container {
-    flex-wrap: wrap; /* Stack content vertically */
-    justify-content: center; /* Center align items */
-    align-items: flex-start; /* Align items at the top */
+@media (max-width: 600px) {
+  /* Center the logo and title */
+  .logo-title {
+    justify-content: center; /* Center the logo and title */
+    width: 100%; /* Ensure it takes up full width */
   }
 
-  .logo-title {
-    margin-bottom: 10px;
+  /* Adjust alignment of other elements (no changes needed for them) */
+  .header-container {
+    flex-wrap: wrap; /* Allow wrapping for responsive design */
+    justify-content: center; /* Center align items */
   }
 
   .nav {
-    justify-content: center;
-    margin-bottom: 10px;
+    justify-content: center; /* Keep the nav items in the same position */
   }
 
-  .nav-link,
-  .profile-btn,
-  .logout-btn,
-  .language-select {
-    padding: 4px 8px; /* Smaller padding for responsive design */
-  }
-
-  .lang-form {
-    margin-left: 10px;
+  .user-menu {
+    justify-content: center; /* Ensure user menu items are still aligned */
   }
 }
 
 @media (max-width: 480px) {
-  .header-container {
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
+  .nav-link, .language-select, .profile-btn, .logout-btn {
+    font-size: 14px; /* Adjust font size for smaller screens */
+    padding: 4px 8px; /* Adjust padding for smaller screens */
+    height: 36px; /* Set a fixed height for all buttons */
+    line-height: 36px; /* Center the text vertically */
+    text-align: center; /* Center the text horizontally */
+    white-space: nowrap; /* Prevent text from wrapping */
+    margin: 2px; /* Reduce space between buttons */
   }
-
-  .title {
-    display: none; /* Hide title on very small screens */
+  .user-menu{
+    margin-right: 1px; /* Adjust margin for user menu */
   }
-
-  .username {
-    display: none; /* Hide username on very small screens */
+  .lang-form {
+    margin-left: 1px; /* Adjust margin for language select */
   }
+}
 
-  .nav-link,
-  .profile-btn,
-  .logout-btn,
-  .language-select {
-    padding: 4px 8px; /* Consistent padding for all buttons */
+@media (max-width: 330px) {
+  .nav-link, .language-select, .profile-btn, .logout-btn {
+    font-size: 12px; /* Adjust font size for smaller screens */
+    padding: 2px 6px; /* Adjust padding for smaller screens */
+    height: 36px; /* Set a fixed height for all buttons */
+    line-height: 36px; /* Center the text vertically */
+    text-align: center; /* Center the text horizontally */
+    white-space: nowrap; /* Prevent text from wrapping */
+    margin: 1px; /* Reduce space between buttons */
+  }
+  .user-menu{
+    margin-right: 1px; /* Adjust margin for user menu */
+  }
+  .lang-form {
+    margin-left: 1px; /* Adjust margin for language select */
   }
 }
