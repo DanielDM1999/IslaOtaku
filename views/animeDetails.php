@@ -96,3 +96,27 @@
         </div>
     </div>
 </div>
+
+<div class="modal-overlay" id="addToListModalOverlay">
+    <!-- Modal Content -->
+    <div class="modal">
+        <div class="modal-content">
+            <h2><?php echo $translations['add_to_list'] ?? 'Add to My List'; ?></h2>
+            <form id="addToListForm">
+                <div class="form-group">
+                    <label for="list-category"><?php echo $translations['select_category'] ?? 'Select Category'; ?></label>
+                    <select id="list-category" name="category">
+                        <option value="viewing"><?php echo $translations['viewing'] ?? 'Viewing'; ?></option>
+                        <option value="completed"><?php echo $translations['completed'] ?? 'Completed'; ?></option>
+                        <option value="dropped"><?php echo $translations['dropped'] ?? 'Dropped'; ?></option>
+                    </select>
+                </div>
+                <input type="hidden" name="anime_id" value="<?php echo htmlspecialchars($animeId); ?>">
+                <div class="modal-buttons">
+                    <button type="submit"><?php echo $translations['save'] ?? 'Save'; ?></button>
+                    <button type="button" class="modal-close"><?php echo $translations['close'] ?? 'Close'; ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
