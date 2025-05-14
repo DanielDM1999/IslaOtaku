@@ -102,16 +102,19 @@
     <div class="modal">
         <div class="modal-content">
             <h2><?php echo $translations['add_to_list'] ?? 'Add to My List'; ?></h2>
-            <form id="addToListForm">
+            <form id="addToListForm" method="post" action="index.php">
                 <div class="form-group">
-                    <label for="list-category"><?php echo $translations['select_category'] ?? 'Select Category'; ?></label>
-                    <select id="list-category" name="category">
+                    <label for="list-status"><?php echo $translations['select_status'] ?? 'Select Status'; ?></label>
+                    <select id="list-status" name="status">
                         <option value="Watching"><?php echo $translations['watching'] ?? 'Watching'; ?></option>
                         <option value="Completed"><?php echo $translations['completed'] ?? 'Completed'; ?></option>
                         <option value="Dropped"><?php echo $translations['dropped'] ?? 'Dropped'; ?></option>
                     </select>
                 </div>
                 <input type="hidden" name="anime_id" value="<?php echo htmlspecialchars($animeId); ?>">
+                <input type="hidden" name="action" value="updateList">
+                <input type="hidden" name="content" value="animeDetails">
+                <input type="hidden" name="id" value="<?php echo htmlspecialchars($animeId); ?>">
                 <div class="modal-buttons">
                     <button type="submit"><?php echo $translations['save'] ?? 'Save'; ?></button>
                     <button type="button" class="modal-close"><?php echo $translations['close'] ?? 'Close'; ?></button>

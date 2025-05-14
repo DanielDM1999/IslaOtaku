@@ -52,5 +52,6 @@ $translations = [
     'show_more' => 'Mostrar Más',
     'show_less' => 'Mostrar Menos',
     'my_lists' => 'Mis Listas',
+    'dropped' => 'Abandonados',
 ];
 ?>

@@ -5,15 +5,15 @@
     background-color: var(--surface);
     color: var(--onSurface);
     border-radius: 8px;
-    box-sizing: border-box; /* Ensure padding/margin doesn't overflow the container */
+    box-sizing: border-box;
 }
 
 .category-buttons {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Ensure buttons wrap on smaller screens */
-    justify-content: center; /* Center the buttons */
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .toggle-btn {
@@ -24,8 +24,8 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 0.9rem; /* Adjust font size */
-    white-space: nowrap; /* Prevent text overflow in smaller buttons */
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 .toggle-btn.active {
@@ -49,9 +49,9 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Make the width flexible */
-    min-width: 200px; /* Remove this or set a higher value if you want larger cards */
-    height: 300px; /* Set a fixed height to ensure consistency */
+    width: 100%;
+    min-width: 200px;
+    height: 300px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -68,8 +68,8 @@
 
 .anime-item img {
     width: 100%;
-    height: 100%; /* Ensure the image fills the entire height */
-    object-fit: cover; /* Ensure image covers the space without stretching */
+    height: 100%;
+    object-fit: cover;
 }
 
 .anime-card h2 {
@@ -136,16 +136,16 @@
 
 @media (max-width: 768px) {
     .anime-list {
-        grid-template-columns: repeat(3, 1fr); /* 3 columns for screens <= 768px */
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .anime-item {
-        height: 250px; /* Reduce the height of the items on smaller screens */
+        height: 250px;
     }
 
     .anime-item:hover {
-        transform: none; /* Disable hover effect on small screens */
-        box-shadow: none; /* Disable shadow for mobile users */
+        transform: none;
+        box-shadow: none;
     }
 
     .pagination a {
@@ -158,11 +158,11 @@
 /* For screens <= 480px */
 @media (max-width: 480px) {
     .anime-list {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns for screens <= 480px */
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .anime-item {
-        height: 250px; /* Adjust the height for smaller screens */
+        height: 250px;
     }
 
     .pagination {
@@ -179,20 +179,20 @@
 /* For screens <= 320px */
 @media (max-width: 320px) {
     .anime-list {
-        grid-template-columns: repeat(1, 1fr); /* 1 column for screens <= 320px */
+        grid-template-columns: repeat(1, 1fr);
     }
 
     .anime-item {
-        height: auto;  /* Allow flexibility in height on very small screens */
+        height: auto;
     }
 
     .pagination {
         width: 100%;
-        flex-wrap: wrap;  /* Prevent overflow */
+        flex-wrap: wrap;
     }
 
     .toggle-btn {
-        padding: 8px 15px; /* Adjust button size for small screens */
+        padding: 8px 15px;
         font-size: 0.8rem;
     }
 }

@@ -22,7 +22,6 @@ if (isset($_POST['lang'])) {
 // Load the appropriate language dictionary
 include(__DIR__ . "/dictionaries/$lang.php");
 
-// Include controllers for user and anime functionalities
 require_once(__DIR__ . '/controllers/UserController.php');
 require_once(__DIR__ . '/controllers/AnimeController.php');
 require_once(__DIR__ . '/controllers/ListController.php');
@@ -124,7 +123,7 @@ if ($content === 'animeDetails' && isset($_GET['id'])) {
     $page = min($page, max(1, $totalPages));
 }
 
-// Handle profile updates (including profile picture upload)
+// Handle profile updates
 $updateSuccess = false;
 $profileUpdateError = '';
 
@@ -176,18 +175,43 @@ if (!file_exists($defaultImagePath)) {
 }
 
 if (isset($_GET['action']) && $_GET['action'] === 'filterList' && isset($_GET['status'])) {
-    // Assuming user ID is available from session or authentication system
-    $userId = $_SESSION['user_id']; // Or whatever method you're using for the logged-in user
+    $userId = $_SESSION['user_id']; 
 
     $status = isset($_GET['status']) ? $_GET['status'] : 'Watching'; 
         
-    // Call the controller method to get the filtered list
     $listController = new ListController();
     $animeList = $listController->getFilteredAnimeList($userId, $status);
 
-    // Return the data as a JSON response
     echo json_encode($animeList);
     exit;
+}
+
+// Handle anime list update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'updateList' && isset($_POST['anime_id'], $_POST['status'])) {
+    // Check if user is logged in
+    if (!$isLoggedIn) {
+        header("Location: index.php?content=login");
+        exit;
+    }
+    
+    try {
+        $userId = $currentUser['user_id'];
+        $animeId = (int) $_POST['anime_id'];
+        $status = $_POST['status'];
+
+        // Add or update the anime in the user's list
+        $result = $listController->addOrUpdateAnimeToList($userId, $animeId, $status);
+        
+        if ($result) {
+            header("Location: index.php?content=animeDetails&id={$animeId}&success=1");
+        } else {
+            header("Location: index.php?content=animeDetails&id={$animeId}&error=1");
+        }
+        exit;
+    } catch (Exception $e) {
+        header("Location: index.php?content=animeDetails&id={$animeId}&error=1");
+        exit;
+    }
 }
 ?>
 

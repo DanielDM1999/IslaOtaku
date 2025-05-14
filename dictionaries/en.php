@@ -17,7 +17,6 @@ $translations = [
     'anime_stats' => 'Anime Statistics',
     'watching' => 'Watching',
     'completed' => 'Completed',
-    'plan_to_watch' => 'Plan to Watch',
     'reviews' => 'Reviews',
     'not_logged_in' => 'You are not logged in',
     'discover_anime' => 'Welcome to IslaOtaku',
@@ -52,5 +51,6 @@ $translations = [
     'show_more' => 'Show More',
     'show_less' => 'Show Less',
     'my_lists' => 'My Lists',
+    'dropped' => 'Dropped',
 ];
 ?>
