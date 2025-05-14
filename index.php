@@ -25,9 +25,11 @@ include(__DIR__ . "/dictionaries/$lang.php");
 // Include controllers for user and anime functionalities
 require_once(__DIR__ . '/controllers/UserController.php');
 require_once(__DIR__ . '/controllers/AnimeController.php');
+require_once(__DIR__ . '/controllers/ListController.php');
 
 $userController = new UserController();
 $animeController = new AnimeController();
+$listController = new ListController();
 
 // Handle AJAX search requests for anime
 if (isset($_GET['action']) && $_GET['action'] === 'search' && isset($_GET['query'])) {
@@ -47,7 +49,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 
 // Determine the content to load based on query parameters
 $content = isset($_GET['content']) ? $_GET['content'] : 'home';
-$allowedContent = ['home', 'login', 'register', 'profile', 'reviews', 'animeDetails'];
+$allowedContent = ['home', 'login', 'register', 'profile', 'reviews', 'animeDetails', 'lists'];
 
 if (!in_array($content, $allowedContent)) {
     $content = 'home';
@@ -172,6 +174,21 @@ if (!file_exists($defaultImagePath)) {
         imagedestroy($image);
     }
 }
+
+if (isset($_GET['action']) && $_GET['action'] === 'filterList' && isset($_GET['status'])) {
+    // Assuming user ID is available from session or authentication system
+    $userId = $_SESSION['user_id']; // Or whatever method you're using for the logged-in user
+
+    $status = isset($_GET['status']) ? $_GET['status'] : 'Watching'; 
+        
+    // Call the controller method to get the filtered list
+    $listController = new ListController();
+    $animeList = $listController->getFilteredAnimeList($userId, $status);
+
+    // Return the data as a JSON response
+    echo json_encode($animeList);
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -193,6 +210,9 @@ if (!file_exists($defaultImagePath)) {
     <?php endif; ?>
     <?php if ($content === 'profile'): ?>
         <link rel="stylesheet" href="./public/css/profile.css">
+    <?php endif; ?>
+    <?php if ($content === 'lists'): ?>
+        <link rel="stylesheet" href="./public/css/lists.css">
     <?php endif; ?>
 
     <title>
@@ -227,6 +247,10 @@ if (!file_exists($defaultImagePath)) {
 
                         <a href="index.php?content=profile" class="nav-link user-btn">
                             <span class="username"><?php echo htmlspecialchars($userName); ?></span>
+                        </a>
+
+                        <a href="index.php?content=lists" class="nav-link my-lists-btn">
+                            <?php echo $translations['my_lists'] ?? 'My Lists'; ?>
                         </a>
 
                         <a href="index.php?action=logout" class="nav-link logout-btn">
@@ -267,6 +291,9 @@ if (!file_exists($defaultImagePath)) {
             case 'animeDetails':
                 include(__DIR__ . '/views/animeDetails.php');
                 break;
+            case 'lists':
+                include(__DIR__ . '/views/lists.php');
+                break;
             default:
                 include(__DIR__ . '/views/home.php');
                 break;
@@ -295,9 +322,13 @@ if (!file_exists($defaultImagePath)) {
             const translations = <?php echo json_encode($translations); ?>;
         </script>
         <script src="./public/js/synopsis.js"></script>
+        <script src="./public/js/modal.js"></script>
     <?php endif; ?>
     <?php if ($content === 'profile'): ?>
         <script src="./public/js/profile.js"></script>
+    <?php endif; ?>
+    <?php if ($content === 'lists'): ?>
+        <script src="./public/js/lists.js"></script>
     <?php endif; ?>
 </body>
 

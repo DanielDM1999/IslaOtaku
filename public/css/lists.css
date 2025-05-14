@@ -1,0 +1,204 @@
+.content {
+    flex: 1;
+    margin: 0 5%;
+    padding: 20px;
+    background-color: var(--surface);
+    color: var(--onSurface);
+    border-radius: 8px;
+    box-sizing: border-box; /* Ensure padding/margin doesn't overflow the container */
+}
+
+.category-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Ensure buttons wrap on smaller screens */
+    justify-content: center; /* Center the buttons */
+}
+
+.toggle-btn {
+    padding: 10px 20px;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.9rem; /* Adjust font size */
+    white-space: nowrap; /* Prevent text overflow in smaller buttons */
+}
+
+.toggle-btn.active {
+    background-color: var(--secondary);
+}
+
+.toggle-btn:hover {
+    background-color: var(--primary);
+}
+
+.anime-list {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    justify-items: center;
+    padding: 20px 0;
+    box-sizing: border-box; /* Prevent padding from affecting grid layout */
+}
+
+.anime-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Ensure all items take equal height */
+}
+
+.anime-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.anime-card {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.anime-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.anime-card h2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    padding: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pagination a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: var(--content);
+    color: var(--onBackground);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+    background-color: var(--accent);
+    color: var(--onAccent);
+}
+
+.pagination a.active {
+    background-color: var(--secondary);
+    color: var(--onSecondary);
+}
+
+.pagination-control {
+    font-weight: bold;
+}
+
+.pagination-ellipsis {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+@media (max-width: 1300px) {
+    .anime-list {
+        grid-template-columns: repeat(4, 1fr); /* 4 columns for screens <= 1300px */
+    }
+}
+
+@media (max-width: 768px) {
+    .anime-list {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns for screens <= 768px */
+    }
+
+    .anime-item {
+        height: 300px;
+    }
+
+    .anime-item:hover {
+        transform: none; /* Disable hover effect on small screens */
+        box-shadow: none; /* Disable shadow for mobile users */
+    }
+
+    .pagination a {
+        min-width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .anime-list {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for screens <= 480px */
+    }
+
+    .anime-item {
+        height: 250px;
+    }
+
+    .pagination {
+        gap: 4px;
+    }
+
+    .pagination a {
+        min-width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .anime-list {
+        grid-template-columns: repeat(1, 1fr); /* 1 column for screens <= 320px */
+    }
+    
+    .anime-item {
+        height: auto;  /* Allow for flexibility in height on very small screens */
+    }
+    
+    .pagination {
+        width: 100%;
+        flex-wrap: wrap;  /* Prevent overflow */
+    }
+
+    .toggle-btn {
+        padding: 8px 15px; /* Adjust button size for small screens */
+        font-size: 0.8rem;
+    }
+}

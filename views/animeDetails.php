@@ -106,9 +106,9 @@
                 <div class="form-group">
                     <label for="list-category"><?php echo $translations['select_category'] ?? 'Select Category'; ?></label>
                     <select id="list-category" name="category">
-                        <option value="viewing"><?php echo $translations['viewing'] ?? 'Viewing'; ?></option>
-                        <option value="completed"><?php echo $translations['completed'] ?? 'Completed'; ?></option>
-                        <option value="dropped"><?php echo $translations['dropped'] ?? 'Dropped'; ?></option>
+                        <option value="Watching"><?php echo $translations['watching'] ?? 'Watching'; ?></option>
+                        <option value="Completed"><?php echo $translations['completed'] ?? 'Completed'; ?></option>
+                        <option value="Dropped"><?php echo $translations['dropped'] ?? 'Dropped'; ?></option>
                     </select>
                 </div>
                 <input type="hidden" name="anime_id" value="<?php echo htmlspecialchars($animeId); ?>">

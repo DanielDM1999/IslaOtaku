@@ -51,5 +51,6 @@ $translations = [
     'save_picture' => 'Save Picture',
     'show_more' => 'Show More',
     'show_less' => 'Show Less',
+    'my_lists' => 'My Lists',
 ];
 ?>

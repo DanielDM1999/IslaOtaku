@@ -81,11 +81,14 @@
 
 /* Profile Section Styles */
 .profile-section {
-  display: flex;
-  flex-direction: column;
+  display: block; /* Change to block to stack the profile info and picture */
   margin-bottom: 30px;
-  border-bottom: 1px solid #eee;
   padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-info, .profile-picture-wrapper {
+  margin-bottom: 20px; /* Add margin between the profile info and picture */
 }
 
 @media (min-width: 768px) {
@@ -304,7 +307,7 @@
 /* Stats Styles */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
   gap: 15px;
   margin-top: 15px;
 }

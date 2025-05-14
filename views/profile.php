@@ -123,10 +123,6 @@
                             <span class="stat-value"><?php echo count($userController->getUserAnimeList('plan_to_watch')); ?></span>
                             <span class="stat-label"><?php echo $translations['plan_to_watch']; ?></span>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-value"><?php echo count($userController->getUserReviews()); ?></span>
-                            <span class="stat-label"><?php echo $translations['reviews']; ?></span>
-                        </div>
                     </div>
                 </div>
             </div>
