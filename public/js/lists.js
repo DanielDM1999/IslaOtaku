@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const animeList = document.getElementById("anime-list");
     const paginationContainer = document.querySelector(".pagination");
     const buttons = document.querySelectorAll(".toggle-btn");
+    const errorMessageContainer = document.createElement("div");
     
     // Function to fetch and display anime list based on the selected category
     const fetchAndDisplayAnimeList = (category) => {
@@ -19,12 +20,19 @@ document.addEventListener("DOMContentLoaded", () => {
           // Clear the current list
           animeList.innerHTML = "";
   
-          // If no animes are found, show a message
+          // If no animes are found, show a message outside the grid
           if (data.length === 0) {
-            animeList.innerHTML = "<p>No animes found in this category.</p>";
+            errorMessageContainer.innerHTML = "<p>No animes found in this category.</p>";
+            errorMessageContainer.classList.add("error-message");
+            animeList.parentElement.appendChild(errorMessageContainer); // Add the message outside the grid
             return;
           }
-  
+
+          // Remove error message if any exists
+          if (errorMessageContainer) {
+            errorMessageContainer.remove();
+          }
+
           // Populate the anime list with new items
           data.forEach(anime => {
             const animeItem = document.createElement("a");
@@ -44,7 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => {
           console.error("Error fetching anime list:", error);
-          animeList.innerHTML = "<p>Error loading anime list. Please try again later.</p>";
+          errorMessageContainer.innerHTML = "<p>Error loading anime list. Please try again later.</p>";
+          errorMessageContainer.classList.add("error-message");
+          animeList.parentElement.appendChild(errorMessageContainer); // Show error message outside the grid
         });
     };
 
@@ -77,8 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
         animeList.style.setProperty("grid-template-columns", "repeat(3, 1fr)", "important");
       } else if (screenWidth <= 1300) {
         animeList.style.setProperty("grid-template-columns", "repeat(4, 1fr)", "important");
-      } else {
-        animeList.style.setProperty("grid-template-columns", "repeat(6, 1fr)", "important");
       }
     }
 });
