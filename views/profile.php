@@ -93,6 +93,18 @@
                                        readonly class="profile-input">
                             </div>
                             
+                            <div class="form-field">
+                                <label for="current_password"><?php echo $translations['current_password'] ?? 'Current Password'; ?>:</label>
+                                <input type="password" id="current_password" name="current_password" 
+                                       readonly class="profile-input" placeholder="<?php echo $translations['enter_current_password'] ?? 'Enter current password'; ?>">
+                            </div>
+                            
+                            <div class="form-field">
+                                <label for="new_password"><?php echo $translations['new_password'] ?? 'New Password'; ?>:</label>
+                                <input type="password" id="new_password" name="new_password" 
+                                       readonly class="profile-input" placeholder="<?php echo $translations['enter_new_password'] ?? 'Enter new password'; ?>">
+                            </div>
+                            
                             <div class="form-actions" style="display: none;">
                                 <button type="submit" class="save-button">
                                     <?php echo $translations['save'] ?? 'Save'; ?>
@@ -120,8 +132,8 @@
                             <span class="stat-label"><?php echo $translations['completed']; ?></span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-value"><?php echo count($userController->getUserAnimeList('plan_to_watch')); ?></span>
-                            <span class="stat-label"><?php echo $translations['plan_to_watch']; ?></span>
+                            <span class="stat-value"><?php echo count($userController->getUserAnimeList('dropped')); ?></span>
+                            <span class="stat-label"><?php echo $translations['dropped']; ?></span>
                         </div>
                     </div>
                 </div>

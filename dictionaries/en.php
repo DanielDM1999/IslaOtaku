@@ -72,5 +72,6 @@ $translations = [
     'rating_invalid' => 'Rating must be between 1 and 5.',
     'comment_too_long' => 'Comment must be less than 1000 characters.',
     'review_submitted_error' => 'Failed to submit review.',
+    'review_updated_success' => 'Review updated successfully!',
 ];
 ?>

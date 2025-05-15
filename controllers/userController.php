@@ -277,16 +277,20 @@ class UserController
         }
     }
 
-    public function updateUserProfile($userId, $name, $email)
+    public function updateUserProfile($userId, $name, $email, $currentPassword = null, $newPassword = null)
     {
         // Get current user data to check if username is changing
-        $currentUser = $this->getCurrentUser();
+        $currentUser = $this->userModel->getUserWithPasswordById($userId);
+        if (!$currentUser) {
+            return 'User not found';
+        }
+        
         $oldUsername = $currentUser['name'] ?? '';
         $oldUsernameSanitized = preg_replace('/[^a-zA-Z0-9_-]/', '_', $oldUsername);
         
         // Validate input
         if (empty($name) || empty($email)) {
-            return 'All fields are required';
+            return 'Name and email are required';
         }
 
         // Check if username is already taken by another user
@@ -299,6 +303,23 @@ class UserController
         $existingUser = $this->userModel->getUserByEmail($email);
         if ($existingUser && $existingUser['user_id'] != $userId) {
             return 'Email already in use';
+        }
+        
+        // Handle password change if requested
+        if (!empty($currentPassword) && !empty($newPassword)) {
+            // Verify current password
+            if (!password_verify($currentPassword, $currentUser['password'])) {
+                return 'Current password is incorrect';
+            }
+            
+            // Hash the new password
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            
+            // Update the password
+            $passwordResult = $this->userModel->updatePassword($userId, $hashedPassword);
+            if (!$passwordResult) {
+                return 'Failed to update password';
+            }
         }
 
         // Update user profile

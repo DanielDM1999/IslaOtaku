@@ -40,8 +40,6 @@ class UserModel
         return false;
     }
 
-
-
     public function getUserById($userId)
     {
         $stmt = $this->conn->prepare("SELECT user_id, name, email, profile_picture, registration_date FROM Users WHERE user_id = :user_id");
@@ -50,6 +48,13 @@ class UserModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getUserWithPasswordById($userId)
+    {
+        $stmt = $this->conn->prepare("SELECT user_id, name, email, password, profile_picture, registration_date FROM Users WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function getUserAnimeList($userId, $status = null)
     {
@@ -84,6 +89,14 @@ class UserModel
         return $stmt->execute();
     }
 
+    public function updatePassword($userId, $hashedPassword)
+    {
+        $stmt = $this->conn->prepare("UPDATE users SET password = :password WHERE user_id = :user_id");
+        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 
     public function updateProfilePicture($userId, $filename)
     {
@@ -95,7 +108,5 @@ class UserModel
 
         return $stmt->execute();
     }
-
 }
-
 ?>
