@@ -77,3 +77,15 @@ document.addEventListener("DOMContentLoaded", () => {
     window.history.replaceState({}, document.title, newUrl)
   }
 })
+
+document.addEventListener("DOMContentLoaded", () => {
+  const writeReviewBtn = document.querySelector(".write-review")
+  const reviewsContainer = document.getElementById("reviews-container")
+
+  if (writeReviewBtn && reviewsContainer) {
+    writeReviewBtn.addEventListener("click", () => {
+      reviewsContainer.style.display = "block"
+      reviewsContainer.scrollIntoView({ behavior: "smooth", block: "start" })
+    })
+  }
+})

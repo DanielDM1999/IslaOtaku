@@ -25,10 +25,12 @@ include(__DIR__ . "/dictionaries/$lang.php");
 require_once(__DIR__ . '/controllers/UserController.php');
 require_once(__DIR__ . '/controllers/AnimeController.php');
 require_once(__DIR__ . '/controllers/ListController.php');
+require_once(__DIR__ . '/controllers/ReviewController.php');
 
 $userController = new UserController();
 $animeController = new AnimeController();
 $listController = new ListController();
+$reviewController = new ReviewController();
 
 // Handle AJAX search requests for anime
 if (isset($_GET['action']) && $_GET['action'] === 'search' && isset($_GET['query'])) {
@@ -108,6 +110,37 @@ if ($content === 'animeDetails' && isset($_GET['id'])) {
     if (!$anime) {
         header("Location: index.php");
         exit();
+    }
+    
+    // Reviews pagination
+    $reviewsPerPage = 5;
+    $reviewPage = isset($_GET['review_page']) ? (int) $_GET['review_page'] : 1;
+    $reviewPage = max(1, $reviewPage);
+    $reviewOffset = ($reviewPage - 1) * $reviewsPerPage;
+    
+    // Get reviews for this anime
+    $reviews = $reviewController->getReviewsByAnimeId($animeId, $reviewsPerPage, $reviewOffset);
+    $reviewCount = $reviewController->getReviewCountByAnimeId($animeId);
+    $averageRating = $reviewController->getAverageRatingByAnimeId($animeId);
+    $totalPages = ceil($reviewCount / $reviewsPerPage);
+    
+    // Check if the user has already reviewed this anime
+    $userReview = $isLoggedIn ? $reviewController->getUserReview($currentUser['user_id'], $animeId) : null;
+    
+    // Initialize review message variables
+    $reviewMessage = '';
+    $reviewSuccess = false;
+    
+    // Check for URL parameters that indicate review actions
+    if (isset($_GET['review_success']) && $_GET['review_success'] == 1) {
+        $reviewMessage = $translations['review_submitted_success'] ?? 'Review submitted successfully!';
+        $reviewSuccess = true;
+    } else if (isset($_GET['delete_success']) && $_GET['delete_success'] == 1) {
+        $reviewMessage = $translations['review_deleted_success'] ?? 'Review deleted successfully!';
+        $reviewSuccess = true;
+    } else if (isset($_GET['delete_error']) && $_GET['delete_error'] == 1) {
+        $reviewMessage = $translations['review_deleted_error'] ?? 'Error deleting review.';
+        $reviewSuccess = false;
     }
 } else if ($content === 'home') {
     // Pagination logic for the homepage anime list
@@ -213,6 +246,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         exit;
     }
 }
+
+// Handle review form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'submitReview') {
+    // Check if user is logged in
+    if (!$isLoggedIn) {
+        header("Location: index.php?content=login");
+        exit;
+    }
+    
+    $userId = $currentUser['user_id'];
+    $animeId = (int) $_POST['anime_id'];
+    $rating = (int) $_POST['rating'];
+    $comment = trim($_POST['comment']);
+    
+    $result = $reviewController->addReview($userId, $animeId, $rating, $comment);
+    
+    $reviewMessage = $result['message'];
+    $reviewSuccess = $result['success'];
+    
+    if ($reviewSuccess) {
+        // Refresh the page to show the updated review
+        header("Location: index.php?content=animeDetails&id={$animeId}&review_success=1");
+        exit;
+    }
+}
+
+// Handle review deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'deleteReview') {
+    // Check if user is logged in
+    if (!$isLoggedIn) {
+        header("Location: index.php?content=login");
+        exit;
+    }
+    
+    $userId = $currentUser['user_id'];
+    $reviewId = (int) $_POST['review_id'];
+    $animeId = (int) $_POST['anime_id'];
+    
+    $result = $reviewController->deleteReview($reviewId, $userId);
+    
+    if ($result) {
+        header("Location: index.php?content=animeDetails&id={$animeId}&delete_success=1");
+    } else {
+        header("Location: index.php?content=animeDetails&id={$animeId}&delete_error=1");
+    }
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -231,6 +311,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <link rel="stylesheet" href="./public/css/hero.css">
     <?php if ($content === 'animeDetails'): ?>
         <link rel="stylesheet" href="./public/css/animeDetails.css">
+        <link rel="stylesheet" href="./public/css/reviews.css">
     <?php endif; ?>
     <?php if ($content === 'profile'): ?>
         <link rel="stylesheet" href="./public/css/profile.css">
@@ -347,6 +428,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         </script>
         <script src="./public/js/synopsis.js"></script>
         <script src="./public/js/modal.js"></script>
+        <script src="./public/js/reviews.js"></script>
     <?php endif; ?>
     <?php if ($content === 'profile'): ?>
         <script src="./public/js/profile.js"></script>
