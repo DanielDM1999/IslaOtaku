@@ -418,12 +418,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     <footer class="footer">
         <div class="footer-container">
-            <p>&copy; <?php echo date("Y"); ?> IslaOtaku. All Rights Reserved.</p>
-            <nav class="footer-nav">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact</a>
-            </nav>
+            <p>&copy; <?php echo date("Y"); ?> <?php echo $translations['rights_reserved']; ?></p>
         </div>
     </footer>
 
