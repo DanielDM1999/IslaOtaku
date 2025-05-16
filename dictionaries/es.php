@@ -69,5 +69,8 @@ $translations = [
     'rating_invalid' => 'La calificación debe estar entre 1 y 5.',
     'comment_too_long' => 'El comentario debe tener menos de 1000 caracteres.',
     'review_submitted_error' => 'Error al enviar la reseña.',
+    'review_submitted_success' => 'Reseña enviada con éxito.',
+    'review_updated_success' => 'Reseña actualizada con éxito.',
+    'review_deleted_success' => 'Reseña eliminada con éxito.',
 ];
 ?>

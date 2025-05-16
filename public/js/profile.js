@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const formActions = document.querySelector('.form-actions');
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
+    const currentPasswordInput = document.getElementById('current_password');
+    const newPasswordInput = document.getElementById('new_password');
     let originalName, originalEmail;
     
     if (editButton) {
@@ -31,11 +33,17 @@ document.addEventListener('DOMContentLoaded', function() {
             originalName = nameInput.value;
             originalEmail = emailInput.value;
             
-            // Enable editing
+            // Enable editing for all fields
             nameInput.readOnly = false;
             emailInput.readOnly = false;
+            currentPasswordInput.readOnly = false;
+            newPasswordInput.readOnly = false;
+            
+            // Add editing class
             nameInput.classList.add('editing');
             emailInput.classList.add('editing');
+            currentPasswordInput.classList.add('editing');
+            newPasswordInput.classList.add('editing');
             
             // Show form actions
             formActions.style.display = 'flex';
@@ -47,19 +55,45 @@ document.addEventListener('DOMContentLoaded', function() {
         cancelButton.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Restore original values
+            // Restore original values for name and email
             nameInput.value = originalName;
             emailInput.value = originalEmail;
             
-            // Disable editing
+            // Clear password fields
+            currentPasswordInput.value = '';
+            newPasswordInput.value = '';
+            
+            // Disable editing for all fields
             nameInput.readOnly = true;
             emailInput.readOnly = true;
+            currentPasswordInput.readOnly = true;
+            newPasswordInput.readOnly = true;
+            
+            // Remove editing class
             nameInput.classList.remove('editing');
             emailInput.classList.remove('editing');
+            currentPasswordInput.classList.remove('editing');
+            newPasswordInput.classList.remove('editing');
             
             // Hide form actions
             formActions.style.display = 'none';
             editButton.style.display = 'block';
+        });
+    }
+    
+    // Form submission validation
+    const profileForm = document.getElementById('profile-form');
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            // Check if both password fields are filled or both are empty
+            const hasCurrentPassword = currentPasswordInput.value.trim() !== '';
+            const hasNewPassword = newPasswordInput.value.trim() !== '';
+            
+            if ((hasCurrentPassword && !hasNewPassword) || (!hasCurrentPassword && hasNewPassword)) {
+                e.preventDefault();
+                alert('Please fill in both current password and new password fields to change your password.');
+                return false;
+            }
         });
     }
     

@@ -75,7 +75,7 @@ if ($content === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POS
         header("Location: $redirect");
         exit();
     } else {
-        $loginError = 'Invalid email or password';
+        $loginError = $translations['invalid_credentials'] ?? 'Invalid email or password';
     }
 }
 
@@ -165,11 +165,21 @@ if ($content === 'profile' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         // Update profile information
         $name = $_POST['name'] ?? '';
         $email = $_POST['email'] ?? '';
+        $currentPassword = $_POST['current_password'] ?? '';
+        $newPassword = $_POST['new_password'] ?? '';
 
         if (empty($name) || empty($email)) {
             $profileUpdateError = $translations['all_fields_required'] ?? 'All fields are required';
         } else {
-            $result = $userController->updateUserProfile($currentUser['user_id'], $name, $email);
+            // Pass the password fields to the updateUserProfile method
+            $result = $userController->updateUserProfile(
+                $currentUser['user_id'], 
+                $name, 
+                $email, 
+                $currentPassword, 
+                $newPassword
+            );
+            
             if ($result === true) {
                 $updateSuccess = true;
                 $currentUser = $userController->getCurrentUser();

@@ -35,47 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   }
-
-  // Show notification if there's a success or error parameter in the URL
-  const urlParams = new URLSearchParams(window.location.search)
-  if (urlParams.has("success") || urlParams.has("error")) {
-    // Create notification element
-    const isSuccess = urlParams.has("success")
-    const notification = document.createElement("div")
-    notification.className = isSuccess ? "notification success" : "notification error"
-
-    // Get translations if available
-    const translations = window.translations || {}
-
-    // Set notification text
-    notification.textContent = isSuccess
-      ? translations.anime_added_success || "Anime added to your list successfully!"
-      : translations.error_occurred || "An error occurred while updating your list."
-
-    // Add notification to the page
-    document.body.appendChild(notification)
-
-    // Remove after 3 seconds
-    setTimeout(() => {
-      notification.classList.add("fade-out")
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification)
-        }
-      }, 500)
-    }, 3000)
-
-    // Remove the success/error parameter from the URL without reloading the page
-    const newUrl =
-      window.location.pathname +
-      "?" +
-      urlParams
-        .toString()
-        .replace(/[?&]success=[^&]*/, "")
-        .replace(/[?&]error=[^&]*/, "")
-
-    window.history.replaceState({}, document.title, newUrl)
-  }
 })
 
 document.addEventListener("DOMContentLoaded", () => {
