@@ -3,9 +3,12 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-05-2025 a las 14:54:07
+-- Tiempo de generación: 17-05-2025 a las 17:21:03
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
+
+CREATE DATABASE isla_otaku;
+USE DATABASE isla_otaku;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -1953,9 +1956,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `profile_picture`, `name`, `email`, `password`, `registration_date`, `role`) VALUES
-(1, 'Daniel/profile.png', 'Daniel', 'danieldm@hotmail.com', '$2y$10$D667xF8YOMPY1WaYav0eD.DSthkYo2ag8orueDSfb82sd/GGBy7ti', '2025-05-17 12:24:49', 'user'),
-(2, 'Mar__a/profile.jpg', 'María', 'maria@gmail.com', '$2y$10$NqZBLhxHRj7QZ2wzkSviu.ACGKpqQUQKy5VERu/fNdHscCSJ73YVi', '2025-05-17 12:27:44', 'user'),
-(3, 'Pedro/profile.jpg', 'Pedro', 'pedro@gmail.com', '$2y$10$se5WEq7toG7Vg8QsTQRhiO54T6yFhG3qt9OYPJa1weChvvZyqqPx6', '2025-05-17 12:30:24', 'user');
+(1, 'Daniel/profile.png', 'Daniel', 'danieldm@hotmail.com', '$2y$10$GQtPOGpscS1IPh6TNgxW8eqX7Wm1tg7hwaG4phDlCBmQJ5EVpUiRK', '2025-05-17 12:24:49', 'user'),
+(2, 'Maria/profile.jpg', 'Maria', 'maria@gmail.com', '$2y$10$Ux.LsRIP3.857Wk20Hswa.YXjgzFhOEqs6MgqHf3DamKAgg5sulBS', '2025-05-17 12:27:44', 'user'),
+(3, 'Pedro/profile.jpg', 'Pedro', 'pedro@gmail.com', '$2y$10$55JImE7qXuoWAYfAWLxlhe1ObhENwT5s3qRQmnEUlSSgPoV.06X7.', '2025-05-17 12:30:24', 'user');
 
 --
 -- Índices para tablas volcadas
