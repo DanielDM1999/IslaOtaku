@@ -8,7 +8,7 @@
 -- Versión de PHP: 8.2.12
 
 CREATE DATABASE isla_otaku;
-USE DATABASE isla_otaku;
+USE isla_otaku;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
