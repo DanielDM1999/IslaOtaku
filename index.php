@@ -183,6 +183,7 @@ if ($content === 'profile' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($result === true) {
                 $updateSuccess = true;
                 $currentUser = $userController->getCurrentUser();
+                header("Location: index.php?content=profile");
             } else {
                 $profileUpdateError = $result;
             }
