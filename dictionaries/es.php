@@ -74,5 +74,7 @@ $translations = [
     'review_deleted_success' => 'Reseña eliminada con éxito.',
     'review_deleted_error' => 'Error al eliminar la reseña.',
     'rights_reserved' => 'IslaOtaku. Todos los derechos reservados.',
+    'confirm_deletion' => 'Borrar Reseña',
+
 ];
 ?>

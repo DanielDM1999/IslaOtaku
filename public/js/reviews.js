@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Assuming translations is defined elsewhere or fetched from the server
-  const translations = window.translations || {}
-
   // Toggle review form section
   const toggleReviewFormBtn = document.getElementById("toggle-review-form-btn")
   const reviewFormSection = document.getElementById("review-form-section")
@@ -16,14 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
       urlParams.has("show_review_form")
 
     // Set initial state based on URL parameters only
-    // We're not using localStorage to avoid persistence between reloads
     if (shouldShowForm) {
       reviewFormSection.style.display = "block"
       toggleReviewFormBtn.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
-        ${translations.hide_review_form || "Hide Review Form"}
+        ${translations.hide_review_form}
       `
 
       // Only scroll if we have URL parameters
@@ -38,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
         </svg>
-        ${translations.write_review || "Write a Review"}
+        ${translations.write_review}
       `
     }
 
@@ -57,11 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Update button text
         toggleReviewFormBtn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-      </svg>
-      ${translations.hide_review_form || "Hide Review Form"}
-    `
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          ${translations.hide_review_form}
+        `
 
         // Scroll to form
         setTimeout(() => {
@@ -76,12 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Update button text
         toggleReviewFormBtn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-      </svg>
-      ${translations.write_review || "Write a Review"}
-    `
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          ${translations.write_review}
+        `
 
         // Restore scroll position
         setTimeout(() => {
@@ -107,14 +103,119 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 
-  // Delete review confirmation
+  // Create the custom dialog
+  const createDeleteDialog = () => {
+    // Check if dialog already exists
+    if (document.getElementById("delete-confirm-dialog")) {
+      return document.getElementById("delete-confirm-overlay")
+    }
+
+    // Create dialog container
+    const dialogOverlay = document.createElement("div")
+    dialogOverlay.id = "delete-confirm-overlay"
+    dialogOverlay.className = "dialog-overlay"
+
+    const dialogBox = document.createElement("div")
+    dialogBox.id = "delete-confirm-dialog"
+    dialogBox.className = "dialog-box"
+
+    // Create dialog content
+    const dialogContent = document.createElement("div")
+    dialogContent.className = "dialog-content"
+
+    const dialogTitle = document.createElement("h3")
+    dialogTitle.className = "dialog-title"
+    dialogTitle.textContent = translations.confirm_deletion
+
+    const dialogMessage = document.createElement("p")
+    dialogMessage.className = "dialog-message"
+    dialogMessage.textContent = translations.delete_review_confirm
+
+    const dialogActions = document.createElement("div")
+    dialogActions.className = "dialog-actions"
+
+    const cancelButton = document.createElement("button")
+    cancelButton.className = "dialog-button cancel-button"
+    cancelButton.textContent = translations.cancel
+
+    const confirmButton = document.createElement("button")
+    confirmButton.className = "dialog-button confirm-button"
+    confirmButton.textContent = translations.delete
+
+    // Assemble the dialog
+    dialogActions.appendChild(cancelButton)
+    dialogActions.appendChild(confirmButton)
+
+    dialogContent.appendChild(dialogTitle)
+    dialogContent.appendChild(dialogMessage)
+    dialogContent.appendChild(dialogActions)
+
+    dialogBox.appendChild(dialogContent)
+    dialogOverlay.appendChild(dialogBox)
+
+    document.body.appendChild(dialogOverlay)
+
+    return dialogOverlay
+  }
+
+  // Delete review with custom dialog
   const deleteButtons = document.querySelectorAll(".delete-review-btn")
 
   deleteButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
-      if (!confirm(translations.delete_review_confirm || "Are you sure you want to delete this review?")) {
-        e.preventDefault()
+      e.preventDefault()
+
+      // Store the form that would be submitted
+      const form = button.closest("form")
+
+      // Create and show the dialog
+      const dialog = createDeleteDialog()
+      dialog.style.display = "flex"
+
+      // Add animation class
+      setTimeout(() => {
+        dialog.classList.add("active")
+      }, 10)
+
+      // Handle dialog buttons
+      const cancelButton = dialog.querySelector(".cancel-button")
+      const confirmButton = dialog.querySelector(".confirm-button")
+
+      // Close dialog function
+      const closeDialog = () => {
+        dialog.classList.remove("active")
+        setTimeout(() => {
+          dialog.style.display = "none"
+        }, 300) // Match this with your CSS transition time
       }
+
+      // Cancel button closes the dialog
+      cancelButton.addEventListener("click", () => {
+        closeDialog()
+      })
+
+      // Clicking outside the dialog closes it
+      dialog.addEventListener("click", (e) => {
+        if (e.target === dialog) {
+          closeDialog()
+        }
+      })
+
+      // Confirm button submits the form
+      confirmButton.addEventListener("click", () => {
+        closeDialog()
+        if (form) {
+          form.submit()
+        }
+      })
+
+      // Close on escape key
+      document.addEventListener("keydown", function escapeClose(e) {
+        if (e.key === "Escape") {
+          closeDialog()
+          document.removeEventListener("keydown", escapeClose)
+        }
+      })
     })
   })
 
@@ -155,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            ${translations.hide_review_form || "Hide Review Form"}
+            ${translations.hide_review_form}
           `
         }
       }

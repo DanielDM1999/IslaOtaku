@@ -74,5 +74,6 @@ $translations = [
     'review_submitted_error' => 'Failed to submit review.',
     'review_updated_success' => 'Review updated successfully!',
     'rights_reserved' => 'IslaOtaku. All rights reserved.',
+    'confirm_deletion' => 'Delete Review',
 ];
 ?>

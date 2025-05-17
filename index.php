@@ -324,6 +324,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <?php if ($content === 'animeDetails'): ?>
         <link rel="stylesheet" href="./public/css/animeDetails.css">
         <link rel="stylesheet" href="./public/css/reviews.css">
+        <link rel="stylesheet" href="./public/css/dialog.css">
     <?php endif; ?>
     <?php if ($content === 'profile'): ?>
         <link rel="stylesheet" href="./public/css/profile.css">
@@ -424,15 +425,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         </div>
     </footer>
 
+        <script>
+            const translations = <?php echo json_encode($translations); ?>;
+        </script>
     <?php if ($content === 'home'): ?>
         <script src="./public/js/cards.js"></script>
         <script src="./public/js/search.js"></script>
     <?php endif; ?>
     <script src="./public/js/auth.js"></script>
     <?php if ($content === 'animeDetails'): ?>
-        <script>
-            const translations = <?php echo json_encode($translations); ?>;
-        </script>
+
         <script src="./public/js/synopsis.js"></script>
         <script src="./public/js/modal.js"></script>
         <script src="./public/js/reviews.js"></script>
