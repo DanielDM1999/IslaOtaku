@@ -65,22 +65,6 @@ Se utilizó un diagrama de Gantt para organizar las tareas y visualizar su durac
 
 ---
 
-## Diseño visual y prototipos
-
-Se eligieron tonos de azul para transmitir confianza y profesionalismo, y la fuente Poppins por ser moderna y legible, buscando una interfaz clara y agradable para los usuarios.
-
----
-
-## Análisis
-
-### Esquema Entidad-Relación  
-_(Inserta aquí el diagrama correspondiente)_
-
-### Diagrama de Casos de Uso  
-_(Inserta aquí el diagrama correspondiente)_
-
----
-
 ## Requisitos
 
 - Registro y gestión de usuarios.  
@@ -96,10 +80,6 @@ El proyecto está publicado en GitHub para facilitar su acceso y revisión:
 [Repositorio IslaOtaku](https://github.com/DanielDM1999/IslaOtaku)
 
 ---
-
-## Documentación
-
-### Manual de usuario y configuración
 
 #### Requisitos previos
 
