@@ -75,6 +75,12 @@ $translations = [
     'review_deleted_error' => 'Error al eliminar la reseña.',
     'rights_reserved' => 'IslaOtaku. Todos los derechos reservados.',
     'confirm_deletion' => 'Borrar Reseña',
+    'required_name' => "Por favor, completa tu nombre",
+    'required_email' => "Por favor, completa tu correo electrónico",
+    'required_password'=> "Por favor, completa tu contraseña",
+    'required_confirm_password' => "Por favor, confirma tu contraseña",
+    'password_length' =>  "La contraseña debe tener al menos 8 caracteres",
+    'passwords_not_match' => "Las contraseñas no coinciden",
 
 ];
 ?>

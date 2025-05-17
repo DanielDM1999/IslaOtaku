@@ -4,8 +4,8 @@
         <div class="error-message"><?php echo $loginError; ?></div>
     <?php endif; ?>
     <form action="index.php?content=login" method="POST">
-        <label for="email"><?php echo $translations['email']; ?>:</label>
-        <input type="email" id="email" name="email" value="<?php echo isset($email) ? htmlspecialchars($email) : ''; ?>">
+        <label for="text"><?php echo $translations['email']; ?>:</label>
+        <input type="text" id="email" name="email" value="<?php echo isset($email) ? htmlspecialchars($email) : ''; ?>">
         <div class="error-message" id="login-email-error"><?php echo isset($errors['email']) ? $translations[$errors['email']] : ''; ?></div>
 
         <label for="password"><?php echo $translations['password']; ?>:</label>

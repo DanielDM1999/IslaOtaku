@@ -1,11 +1,13 @@
 <?php
 class ReviewModel {
-    private $conn;
+    private $conn; // Database connection
 
+    // Constructor to initialize the database connection
     public function __construct($databaseConnection) {
         $this->conn = $databaseConnection;
     }
 
+    // Get a list of reviews for a specific anime with pagination support
     public function getReviewsByAnimeId($animeId, $limit = 10, $offset = 0) {
         $stmt = $this->conn->prepare("
             SELECT r.review_id, r.user_id, r.anime_id, r.rating, r.comment, r.publication_date,
@@ -23,6 +25,7 @@ class ReviewModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Get the total number of reviews for a specific anime
     public function getReviewCountByAnimeId($animeId) {
         $stmt = $this->conn->prepare("
             SELECT COUNT(*) as count
@@ -34,6 +37,7 @@ class ReviewModel {
         return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
     }
 
+    // Get the average rating for a specific anime (rounded to 1 decimal)
     public function getAverageRatingByAnimeId($animeId) {
         $stmt = $this->conn->prepare("
             SELECT AVG(rating) as average_rating
@@ -46,8 +50,9 @@ class ReviewModel {
         return $result['average_rating'] ? round($result['average_rating'], 1) : 0;
     }
 
+    // Add a new review or update an existing review for a user and anime
     public function addReview($userId, $animeId, $rating, $comment) {
-        // First check if user already has a review for this anime
+        // Check if user already reviewed this anime
         if ($this->hasUserReviewedAnime($userId, $animeId)) {
             // Update existing review
             $stmt = $this->conn->prepare("
@@ -56,7 +61,7 @@ class ReviewModel {
                 WHERE user_id = :user_id AND anime_id = :anime_id
             ");
         } else {
-            // Add new review
+            // Insert new review
             $stmt = $this->conn->prepare("
                 INSERT INTO Reviews (user_id, anime_id, rating, comment)
                 VALUES (:user_id, :anime_id, :rating, :comment)
@@ -67,10 +72,11 @@ class ReviewModel {
         $stmt->bindParam(':anime_id', $animeId, PDO::PARAM_INT);
         $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
         $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
-        
+
         return $stmt->execute();
     }
 
+    // Check if a user has already reviewed a specific anime
     public function hasUserReviewedAnime($userId, $animeId) {
         $stmt = $this->conn->prepare("
             SELECT COUNT(*) as count
@@ -83,6 +89,7 @@ class ReviewModel {
         return $stmt->fetch(PDO::FETCH_ASSOC)['count'] > 0;
     }
 
+    // Get a specific user's review for a specific anime
     public function getUserReview($userId, $animeId) {
         $stmt = $this->conn->prepare("
             SELECT *
@@ -95,6 +102,7 @@ class ReviewModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Delete a review by its ID and user ID (to ensure ownership)
     public function deleteReview($reviewId, $userId) {
         $stmt = $this->conn->prepare("
             DELETE FROM Reviews

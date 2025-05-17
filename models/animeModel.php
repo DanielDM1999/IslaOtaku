@@ -20,7 +20,7 @@ class AnimeModel {
     }
     
     public function searchAnimes($query) {
-        $searchTerm = "%$query%"; // Changed to match anywhere in the name
+        $searchTerm = "%$query%";
         $stmt = $this->conn->prepare("SELECT anime_id, name, image_url FROM animes WHERE name LIKE :query ORDER BY name ASC");
         $stmt->bindParam(':query', $searchTerm, PDO::PARAM_STR);
         $stmt->execute();

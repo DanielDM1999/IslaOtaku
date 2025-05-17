@@ -2,28 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Get the current language from the <html lang="..."> attribute
   const currentLang = document.documentElement.lang;
 
-  // Define translations for validation messages
-  const validationMessages = {
-    en: {
-      required_name: "Please fill in your username",
-      required_email: "Please fill in your email",
-      required_password: "Please fill in your password",
-      required_confirm_password: "Please confirm your password",
-      invalid_email: "Please enter a valid email address",
-      password_length: "Password must be at least 6 characters long",
-      passwords_not_match: "Passwords do not match",
-    },
-    es: {
-      required_name: "Por favor, introduce tu nombre de usuario",
-      required_email: "Por favor, introduce tu correo electrónico",
-      required_password: "Por favor, introduce tu contraseña",
-      required_confirm_password: "Por favor, confirma tu contraseña",
-      invalid_email: "Por favor, introduce una dirección de correo electrónico válida",
-      password_length: "La contraseña debe tener al menos 6 caracteres",
-      passwords_not_match: "Las contraseñas no coinciden",
-    },
-  };
-
   // Select the appropriate translations based on the current language, defaulting to English
   const messages = validationMessages[currentLang] || validationMessages.en;
 

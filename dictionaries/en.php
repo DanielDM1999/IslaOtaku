@@ -75,5 +75,12 @@ $translations = [
     'review_updated_success' => 'Review updated successfully!',
     'rights_reserved' => 'IslaOtaku. All rights reserved.',
     'confirm_deletion' => 'Delete Review',
+    'required_name' => "Please fill in your username",
+    'required_email' => "Please fill in your email",
+    'required_password'=> "Please fill in your password",
+    'required_confirm_password' => "Please confirm your password",
+    'password_length' =>  "Password must be at least 6 characters long",
+    'passwords_not_match' => "Passwords do not match",
+    
 ];
 ?>
