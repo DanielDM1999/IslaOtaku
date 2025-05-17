@@ -41,9 +41,5 @@ class ListController {
         return $this->listModel->getFilteredAnimeList($userId, $status);
     }
 
-    // Remove anime from the list
-    public function removeAnimeFromList($userId, $animeId) {
-        $this->listModel->removeAnimeFromList($userId, $animeId);
-    }
 }
 ?>

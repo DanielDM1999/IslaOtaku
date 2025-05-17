@@ -72,12 +72,5 @@ class ListModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Remove an anime from the user's list
-    public function removeAnimeFromList($userId, $animeId) {
-        $stmt = $this->conn->prepare("DELETE FROM Lists WHERE user_id = :user_id AND anime_id = :anime_id");
-        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->bindParam(':anime_id', $animeId, PDO::PARAM_INT);
-        $stmt->execute();
-    }
 }
 ?>
