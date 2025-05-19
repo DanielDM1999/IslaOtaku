@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-05-2025 a las 17:21:03
+-- Tiempo de generación: 19-05-2025 a las 14:12:42
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -1895,20 +1895,17 @@ INSERT INTO `lists` (`list_id`, `user_id`, `anime_id`, `status`, `last_updated`)
 (2, 1, 33, 'Completed', '2025-05-17 12:26:15'),
 (3, 1, 199, 'Completed', '2025-05-17 12:26:53'),
 (4, 1, 269, 'Dropped', '2025-05-17 12:27:14'),
-(5, 2, 19, 'Watching', '2025-05-17 12:29:11'),
-(6, 2, 20, 'Dropped', '2025-05-17 12:29:17'),
-(7, 2, 6, 'Completed', '2025-05-17 12:29:24'),
-(8, 2, 30, 'Completed', '2025-05-17 12:29:32'),
-(9, 2, 43, 'Completed', '2025-05-17 12:29:40'),
-(10, 2, 47, 'Completed', '2025-05-17 12:29:49'),
 (11, 3, 170, 'Completed', '2025-05-17 12:33:44'),
 (12, 3, 205, 'Watching', '2025-05-17 12:33:57'),
 (13, 3, 245, 'Completed', '2025-05-17 12:34:10'),
 (14, 3, 269, 'Dropped', '2025-05-17 12:34:21'),
 (15, 3, 1, 'Completed', '2025-05-17 12:40:23'),
 (16, 3, 223, 'Completed', '2025-05-17 12:40:53'),
-(17, 2, 530, 'Completed', '2025-05-17 12:51:54'),
-(18, 2, 339, 'Completed', '2025-05-17 12:53:16');
+(19, 4, 170, 'Completed', '2025-05-19 12:10:25'),
+(20, 4, 30, 'Watching', '2025-05-19 12:10:51'),
+(21, 4, 120, 'Completed', '2025-05-19 12:11:14'),
+(22, 4, 144, 'Completed', '2025-05-19 12:11:26'),
+(23, 4, 516, 'Watching', '2025-05-19 12:11:41');
 
 -- --------------------------------------------------------
 
@@ -1932,8 +1929,8 @@ CREATE TABLE `reviews` (
 INSERT INTO `reviews` (`review_id`, `user_id`, `anime_id`, `rating`, `comment`, `publication_date`) VALUES
 (1, 3, 1, 5, 'La música y los personajes son lo mejor. Me encantó', '2025-05-17 12:40:28'),
 (2, 3, 223, 4, 'Las peleas son geniales, aunque algunos capítulos se hacen largos.', '2025-05-17 12:41:07'),
-(3, 2, 530, 3, 'Es divertido y nostálgico, pero a veces un poco repetitivo.', '2025-05-17 12:52:08'),
-(4, 2, 339, 3, 'La historia es muy rara y a veces confusa, pero tiene escenas que me gustaron mucho.', '2025-05-17 12:53:35');
+(5, 4, 530, 3, 'Es divertido y nostálgico, pero a veces un poco repetitivo.', '2025-05-19 12:07:08'),
+(6, 4, 170, 5, 'Yo no era fan del básquet, pero este anime me atrapó. Hanamichi es divertido y las jugadas me emocionaban un montón.', '2025-05-19 12:10:37');
 
 -- --------------------------------------------------------
 
@@ -1957,8 +1954,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `profile_picture`, `name`, `email`, `password`, `registration_date`, `role`) VALUES
 (1, 'Daniel/profile.png', 'Daniel', 'danieldm@hotmail.com', '$2y$10$GQtPOGpscS1IPh6TNgxW8eqX7Wm1tg7hwaG4phDlCBmQJ5EVpUiRK', '2025-05-17 12:24:49', 'user'),
-(2, 'Maria/profile.jpg', 'Maria', 'maria@gmail.com', '$2y$10$Ux.LsRIP3.857Wk20Hswa.YXjgzFhOEqs6MgqHf3DamKAgg5sulBS', '2025-05-17 12:27:44', 'user'),
-(3, 'Pedro/profile.jpg', 'Pedro', 'pedro@gmail.com', '$2y$10$55JImE7qXuoWAYfAWLxlhe1ObhENwT5s3qRQmnEUlSSgPoV.06X7.', '2025-05-17 12:30:24', 'user');
+(3, 'Pedro/profile.jpg', 'Pedro', 'pedro@gmail.com', '$2y$10$55JImE7qXuoWAYfAWLxlhe1ObhENwT5s3qRQmnEUlSSgPoV.06X7.', '2025-05-17 12:30:24', 'user'),
+(4, 'Maria/profile.jpg', 'Maria', 'maria@gmail.com', '$2y$10$K8jHKIo.x4uuIc/5av.NaOsFLzRYWq9EXRPGuzgQURcZP2EMsVNdu', '2025-05-19 12:04:39', 'user');
 
 --
 -- Índices para tablas volcadas
@@ -2021,19 +2018,19 @@ ALTER TABLE `genres`
 -- AUTO_INCREMENT de la tabla `lists`
 --
 ALTER TABLE `lists`
-  MODIFY `list_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `list_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas

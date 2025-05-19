@@ -9,29 +9,30 @@ class UserController
     public function __construct()
     {
         $db = new Database();
-        $this->userModel = new UserModel($db->getConnection());
+        $this->userModel = new UserModel($db->getConnection()); // Initialize UserModel with DB connection
     }
 
     private function startSession()
     {
         if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+            session_start(); // Start session if not already started
         }
     }
 
     public function getUserModel()
     {
-        return $this->userModel;
+        return $this->userModel; // Getter for UserModel instance
     }
 
     public function login($email, $password)
     {
         if (empty($email) || empty($password)) {
-            return false;
+            return false; // Validate inputs
         }
 
-        $user = $this->userModel->getUserByEmail($email);
+        $user = $this->userModel->getUserByEmail($email); // Fetch user by email
 
+        // Verify password and set session variables if valid
         if ($user && password_verify($password, $user['password'])) {
             $this->startSession();
 
@@ -48,14 +49,17 @@ class UserController
 
     public function register($name, $email, $password, $confirmPassword)
     {
+        // Check required fields
         if (empty($name) || empty($email) || empty($password) || empty($confirmPassword)) {
             return 'All fields are required';
         }
 
+        // Check password confirmation
         if ($password !== $confirmPassword) {
             return 'Passwords do not match';
         }
 
+        // Check if email or username already exist
         if ($this->userModel->getUserByEmail($email)) {
             return 'Email already in use';
         }
@@ -64,13 +68,14 @@ class UserController
             return 'Username already taken';
         }
 
+        // Hash password and create user
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
         $userId = $this->userModel->createUser($name, $email, $hashedPassword);
 
         if ($userId) {
             $this->startSession();
 
+            // Set session for newly registered user
             $_SESSION['user_id'] = $userId;
             $_SESSION['name'] = $name;
             $_SESSION['email'] = $email;
@@ -86,9 +91,10 @@ class UserController
     {
         $this->startSession();
 
-        $_SESSION = array();
-        session_destroy();
+        $_SESSION = array(); // Clear session data
+        session_destroy();   // Destroy session
 
+        // Clear session cookie if used
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
             setcookie(
@@ -107,7 +113,7 @@ class UserController
     {
         $this->startSession();
 
-        // Check if session is expired
+        // Return false if session expired or user_id not set
         if ($this->isSessionExpired()) {
             return false;
         }
@@ -118,19 +124,18 @@ class UserController
     public function getCurrentUser()
     {
         if (!$this->isLoggedIn()) {
-            return null;
+            return null; // Return null if not logged in
         }
 
-        // Update last activity time
-        $_SESSION['last_activity'] = time();
+        $_SESSION['last_activity'] = time(); // Update last activity timestamp
 
-        return $this->userModel->getUserById($_SESSION['user_id']);
+        return $this->userModel->getUserById($_SESSION['user_id']); // Fetch user data
     }
 
     public function getUserAnimeList($status = null)
     {
         if (!$this->isLoggedIn()) {
-            return [];
+            return []; // Return empty array if not logged in
         }
 
         return $this->userModel->getUserAnimeList($_SESSION['user_id'], $status);
@@ -139,7 +144,7 @@ class UserController
     public function getUserReviews()
     {
         if (!$this->isLoggedIn()) {
-            return [];
+            return []; // Return empty array if not logged in
         }
 
         return $this->userModel->getUserReviews($_SESSION['user_id']);
@@ -149,8 +154,9 @@ class UserController
     {
         $this->startSession();
 
+        // Check if last activity was more than 30 minutes ago
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > 1800) {
-            $this->logout();
+            $this->logout(); // Logout user on session expiration
             return true;
         }
         return false;
@@ -160,24 +166,24 @@ class UserController
     {
         error_log("Starting profile picture update process for user ID: " . $userId);
 
-        // Get current user to access the username
+        // Get current user info
         $currentUser = $this->getCurrentUser();
         if (!$currentUser || !isset($currentUser['name'])) {
             error_log("Could not retrieve username for user ID: " . $userId);
             return 'Could not retrieve user information.';
         }
         
-        // Sanitize username for folder name (remove special characters)
+        // Sanitize username for folder name
         $username = preg_replace('/[^a-zA-Z0-9_-]/', '_', $currentUser['name']);
         error_log("Using username for folder: " . $username);
 
-        // Check if file was uploaded properly
+        // Check for upload errors
         if ($fileData['error'] !== UPLOAD_ERR_OK) {
             error_log("File upload error: " . $fileData['error']);
             return 'File upload failed with error code: ' . $fileData['error'];
         }
 
-        // Validate file type
+        // Validate file MIME type
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
         $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
         $detectedType = finfo_file($fileInfo, $fileData['tmp_name']);
@@ -190,14 +196,14 @@ class UserController
             return 'Invalid file type. Only JPG, PNG, and GIF are allowed.';
         }
 
-        // Validate file size (max 2MB)
-        $maxSize = 2 * 1024 * 1024; // 2MB in bytes
+        // Validate max file size (2MB)
+        $maxSize = 2 * 1024 * 1024;
         if ($fileData['size'] > $maxSize) {
             error_log("File too large: " . $fileData['size'] . " bytes");
             return 'File is too large. Maximum size is 2MB.';
         }
 
-        // Create base profilePictures directory if it doesn't exist
+        // Create base and user-specific upload directories if needed
         $baseUploadDir = __DIR__ . '/../uploads/profilePictures/';
         if (!file_exists($baseUploadDir)) {
             error_log("Creating base upload directory: " . $baseUploadDir);
@@ -208,7 +214,6 @@ class UserController
             }
         }
 
-        // Create user-specific directory inside profilePictures
         $userUploadDir = $baseUploadDir . $username . '/';
         if (!file_exists($userUploadDir)) {
             error_log("Creating user-specific upload directory: " . $userUploadDir);
@@ -219,31 +224,29 @@ class UserController
             }
         }
 
-        // Check if directory is writable
+        // Ensure directory is writable, attempt to fix permissions if not
         if (!is_writable($userUploadDir)) {
             error_log("User upload directory is not writable: " . $userUploadDir);
-            chmod($userUploadDir, 0777); // Try to make it writable
+            chmod($userUploadDir, 0777);
             if (!is_writable($userUploadDir)) {
                 return 'Upload directory is not writable. Please check server permissions.';
             }
         }
 
-        // Generate a filename - using a consistent name for easy replacement
+        // Generate filename and paths
         $fileExtension = pathinfo($fileData['name'], PATHINFO_EXTENSION);
         $newFilename = 'profile.' . $fileExtension;
         $targetPath = $userUploadDir . $newFilename;
-        
-        // This is the path that will be stored in the database
         $dbPath = $username . '/' . $newFilename;
 
         error_log("Target path for upload: " . $targetPath);
         error_log("Path to store in database: " . $dbPath);
         error_log("Temporary file exists: " . (file_exists($fileData['tmp_name']) ? 'Yes' : 'No'));
 
-        // Delete any existing profile pictures in the user's directory
+        // Remove any existing profile pictures before saving new one
         $this->cleanUserProfileDirectory($userUploadDir);
 
-        // Move the uploaded file
+        // Move uploaded file to target directory
         if (!move_uploaded_file($fileData['tmp_name'], $targetPath)) {
             $error = error_get_last();
             error_log("Failed to move uploaded file. PHP Error: " . ($error ? json_encode($error) : 'Unknown error'));
@@ -252,7 +255,7 @@ class UserController
 
         error_log("File successfully moved to: " . $targetPath);
 
-        // Update the user's profile picture in the database - store only the path
+        // Update DB with new profile picture path
         $result = $this->userModel->updateProfilePicture($userId, $dbPath);
 
         if ($result) {
@@ -264,14 +267,13 @@ class UserController
         return 'Failed to update profile picture in the database.';
     }
 
-
     private function cleanUserProfileDirectory($directory) {
         if (is_dir($directory)) {
             $files = glob($directory . '*');
             foreach ($files as $file) {
                 if (is_file($file)) {
                     error_log("Deleting old profile picture: " . $file);
-                    unlink($file);
+                    unlink($file); // Delete old profile pictures
                 }
             }
         }
@@ -279,7 +281,7 @@ class UserController
 
     public function updateUserProfile($userId, $name, $email, $currentPassword = null, $newPassword = null)
     {
-        // Get current user data to check if username is changing
+        // Get current user data for validation and to check username change
         $currentUser = $this->userModel->getUserWithPasswordById($userId);
         if (!$currentUser) {
             return 'User not found';
@@ -288,62 +290,55 @@ class UserController
         $oldUsername = $currentUser['name'] ?? '';
         $oldUsernameSanitized = preg_replace('/[^a-zA-Z0-9_-]/', '_', $oldUsername);
         
-        // Validate input
+        // Validate required fields
         if (empty($name) || empty($email)) {
             return 'Name and email are required';
         }
 
-        // Check if username is already taken by another user
+        // Check if new username or email already taken by others
         $existingUser = $this->userModel->getUserByName($name);
         if ($existingUser && $existingUser['user_id'] != $userId) {
             return 'Username already taken';
         }
 
-        // Check if email is already in use by another user
         $existingUser = $this->userModel->getUserByEmail($email);
         if ($existingUser && $existingUser['user_id'] != $userId) {
             return 'Email already in use';
         }
         
-        // Handle password change if requested
+        // Handle password change if both current and new password provided
         if (!empty($currentPassword) && !empty($newPassword)) {
-            // Verify current password
             if (!password_verify($currentPassword, $currentUser['password'])) {
                 return 'Current password is incorrect';
             }
             
-            // Hash the new password
             $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-            
-            // Update the password
             $passwordResult = $this->userModel->updatePassword($userId, $hashedPassword);
             if (!$passwordResult) {
                 return 'Failed to update password';
             }
         }
 
-        // Update user profile
+        // Update user profile data
         $result = $this->userModel->updateUser($userId, $name, $email);
 
         if ($result) {
-            // Update session data
+            // Update session with new data
             $_SESSION['name'] = $name;
             $_SESSION['email'] = $email;
             
-            // If username changed, update profile picture path
+            // If username changed and user has a profile picture, move picture folder
             if ($oldUsername !== $name && !empty($currentUser['profile_picture'])) {
                 $newUsernameSanitized = preg_replace('/[^a-zA-Z0-9_-]/', '_', $name);
                 
-                // Only proceed if the old username folder exists
                 $oldUserDir = __DIR__ . '/../uploads/profilePictures/' . $oldUsernameSanitized . '/';
                 if (file_exists($oldUserDir)) {
-                    // Create new username directory
                     $newUserDir = __DIR__ . '/../uploads/profilePictures/' . $newUsernameSanitized . '/';
                     if (!file_exists($newUserDir)) {
                         mkdir($newUserDir, 0777, true);
                     }
                     
-                    // Move files from old directory to new directory
+                    // Move files from old to new directory
                     $files = glob($oldUserDir . '*');
                     foreach ($files as $file) {
                         if (is_file($file)) {
@@ -352,7 +347,7 @@ class UserController
                         }
                     }
                     
-                    // Update profile picture path in database
+                    // Update DB path for profile picture
                     $oldPath = $currentUser['profile_picture'];
                     $newPath = str_replace($oldUsernameSanitized . '/', $newUsernameSanitized . '/', $oldPath);
                     $this->userModel->updateProfilePicture($userId, $newPath);
